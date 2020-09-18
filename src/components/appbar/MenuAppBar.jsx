@@ -7,9 +7,12 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+
 
 //Context
 import authContext from '../../context/authentication/authContext';
+import { Box } from '@material-ui/core';
 
 
 
@@ -59,21 +62,18 @@ export default function MenuAppBar() {
                 <Typography variant="h6" align="right">
                   {/*usuario.userName*/} Usuario
                 </Typography>
-                <Typography  variant="body1" align="right">
-                  {/*usuario.userRole*/} Role
-                </Typography>
+               
                 <Typography  variant="body2" align="right">
                   Cerrar sesión
                 </Typography>
               </Grid>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
-              >
-                <AccountCircle fontSize="large"/>
-              </IconButton>
+              <Box display="flex" alignItems="center" ml={1}> 
+              <Avatar>
+                A
+              </Avatar>
+              </Box>
+             
+              
               </Grid>
             </div>
           )}

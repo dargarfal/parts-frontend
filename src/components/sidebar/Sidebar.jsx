@@ -158,7 +158,7 @@ function Sidebar() {
               <ListItemIcon>
                 <PeopleAltIcon />
               </ListItemIcon>
-              <ListItemText primary="Listado de usuarios" />
+              <ListItemText primary="Gestión de usuarios" />
             </ListItem>
           </Link>
           <Link to="/users" className={classes.link}>

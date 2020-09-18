@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 //Components
@@ -10,6 +10,7 @@ import AddCar from './components/cars/AddCar';
 import ListCars from './components/cars/ListCars';
 import Parts from './components/parts/Parts';
 import Users from './components/users/Users';
+
 
 //Provider
 import AuthState from './context/authentication/authState';
@@ -33,6 +34,9 @@ const theme = createMuiTheme({
 
 
 function App() {
+  
+
+  
   return (
    
     <ThemeProvider theme={theme}>

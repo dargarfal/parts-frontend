@@ -8,14 +8,15 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../copyright/Copyright';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
+
+import Alerta from '../alert/Alerta'; 
 
 //Context
 import authContext from '../../context/authentication/authContext';
 import alertaContext from '../../context/alert/alertContext';
+
 
 
 
@@ -61,14 +62,26 @@ export default function SignInSide(props) {
   const authsContext = useContext(authContext);
   const { mensaje, autenticado, loginUser } = authsContext;
 
+  //State para manejar cuando se muestra la alerta
+  const [showalert, setshowalert] = useState();
+
+
   useEffect(() => {
 
     if(autenticado){
+      
       props.history.push('/dashboard');
     }
 
     if(mensaje){
       mostrarAlerta(mensaje.title, mensaje.msg, mensaje.severity);
+    }
+
+    //Para manejar cuando se muestra la alerta
+    if(alerta){
+      setshowalert(<Alerta />)
+    }else{
+      setshowalert(null)
     }
   }, [mensaje, autenticado, props.history])
 
@@ -92,7 +105,13 @@ export default function SignInSide(props) {
     e.preventDefault();
 
     if(userName !== '' && userPass !== ''){
-      loginUser(user);
+
+      try {
+        loginUser(user);
+      } catch (error) {
+        mostrarAlerta('Error', 'Problema de conexión con el servidor', 'error');
+      }
+      
     }else{
       mostrarAlerta('Error', 'Ambos campos deben ser llenados', 'error')
     }
@@ -100,6 +119,11 @@ export default function SignInSide(props) {
 
   return (
     <Grid container component="main" className={classes.root}>
+      
+      {
+      //si existe se muestra la alerta
+      showalert
+      }
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -155,15 +179,10 @@ export default function SignInSide(props) {
               Entrar
             </Button>
             {alerta ?
-              <Box>
-                <Alert severity={alerta.severity} >
-                  <AlertTitle>{alerta.title}</AlertTitle>
-                  {alerta.msg}
-                </Alert>
-              </Box>
-              :
+              <Alerta />
+                :
               null
-          }
+            }
             
             <Box mt={5}>
               <Copyright />

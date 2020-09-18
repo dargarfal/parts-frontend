@@ -43,7 +43,8 @@ const AuthContext = (props) => {
       localStorage.removeItem('token');
 
       let alertaerror;
-      
+
+      console.log(error);
       if(error.response.status === 406){
           alertaerror = {
           msg: error.response.data.errores[0].msg,
