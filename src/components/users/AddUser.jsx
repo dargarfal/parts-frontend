@@ -10,7 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 function AddUser() {
   return (
     <div>
-      <Box bgcolor="#FFF" p={2} width={800} >
+      <Box bgcolor="#FFF" p={2} width={400} >
         <Typography variant="h5">Adicionar nuevo usuario</Typography>
 
         <TextField
