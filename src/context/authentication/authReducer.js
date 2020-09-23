@@ -1,6 +1,4 @@
-import { 
-  REGISTRO_EXITOSO,
-  REGISTRO_ERROR,
+import {
   OBTENER_USUARIO,
   LOGIN_EXITOSO,
   LOGIN_ERROR,
@@ -28,6 +26,16 @@ export default (state, action) => {
         autenticado: true,
         token: localStorage.getItem('token'),
         cargado: true
+      }  
+    case CERRAR_SESION:
+      localStorage.removeItem('token');
+      return{
+        ...state,
+        token: null,
+        autenticado: null,
+        usuario: null,
+        mensaje: null,
+        cargado: false
       }    
     default:
       return state;

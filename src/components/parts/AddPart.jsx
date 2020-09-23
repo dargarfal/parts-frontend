@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button, Typography } from "@material-ui/core";
+import { Box, Button, Typography, InputAdornment } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +59,9 @@ function AddPart() {
               margin="normal"
               fullWidth
               size="small"
+              InputProps={{
+                startAdornment: <InputAdornment position="start">€</InputAdornment>,
+              }}
             />
           </Box>
           <Box mt={4}>

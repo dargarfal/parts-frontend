@@ -14,7 +14,7 @@ import {
  } from '../../types';
 
 
-const AuthContext = (props) => {
+const AuthState = (props) => {
 
   const initialState = {
     token: localStorage.getItem('token'),
@@ -44,7 +44,6 @@ const AuthContext = (props) => {
 
       let alertaerror;
 
-      console.log(error);
       if(error.response.status === 406){
           alertaerror = {
           msg: error.response.data.errores[0].msg,
@@ -77,7 +76,7 @@ const AuthContext = (props) => {
 
       try {
         const usuarioAuth = await clienteAxios.get('api/login');
-
+        
         dispatch({
           type: OBTENER_USUARIO,
           payload: usuarioAuth.data
@@ -99,6 +98,15 @@ const AuthContext = (props) => {
     
   }
 
+  //Cerrando sesion
+  const cerrarSesion = () => {
+
+    dispatch({
+      type: CERRAR_SESION
+    })
+
+  }
+
   return (
     <authContext.Provider
       value={{
@@ -107,7 +115,9 @@ const AuthContext = (props) => {
         usuario: state.usuario,
         mensaje: state.mensaje,
         cargado: state.cargado,
-        loginUser
+        loginUser,
+        usuarioAutenticado,
+        cerrarSesion
       }}
     >
       {props.children}
@@ -118,4 +128,4 @@ const AuthContext = (props) => {
 
 }
 
-export default AuthContext;
+export default AuthState;

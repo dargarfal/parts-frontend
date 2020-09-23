@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import SaveIcon from '@material-ui/icons/Save';
+import SaveIcon from "@material-ui/icons/Save";
+
+//Context
+import brandContext from "../../context/brands/brandContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,12 +24,45 @@ const useStyles = makeStyles((theme) => ({
 
 function AddBrand() {
   const classes = useStyles();
+
+  const brandsContext = useContext(brandContext);
+  const { marcaregistrada, addNewBrand } = brandsContext;
+
+  useEffect(() => {
+    if (marcaregistrada) {
+      setBrand({
+        nameBrand: "",
+        logoBrand: "",
+      });
+    }
+  }, [marcaregistrada]);
+
+  const [brand, setBrand] = useState({
+    nameBrand: "",
+    logoBrand: "",
+  });
+
+  const { nameBrand, logoBrand } = brand;
+
+  const onChange = (e) => {
+    setBrand({
+      ...brand,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const onAddBrand = (e) => {
+    e.preventDefault();
+
+    addNewBrand(brand);
+  };
+
   return (
     <div>
-      <Box boxShadow={2} p={1} bgcolor='#FFF'>
+      <Box boxShadow={2} p={1} bgcolor="#FFF">
         <Typography variant="h4">Nueva Marca</Typography>
 
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={onAddBrand}>
           <TextField
             id="outlined-helperText"
             label="Marca"
@@ -35,6 +71,9 @@ function AddBrand() {
             margin="normal"
             fullWidth
             required
+            name="nameBrand"
+            onChange={onChange}
+            value={nameBrand}
           />
 
           <TextField
@@ -44,6 +83,9 @@ function AddBrand() {
             variant="outlined"
             margin="normal"
             fullWidth
+            name="logoBrand"
+            onChange={onChange}
+            value={logoBrand}
           />
 
           <Button

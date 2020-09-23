@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useState} from 'react';
 import Box from "@material-ui/core/Box";
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import { Typography } from '@material-ui/core';
+import { Typography, Tooltip } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
+import EditLocation from './EditLocation';
+import DeleteLocation from './DeleteLocation';
+
 
 function Location({nameLocation}) {
+
+  const [edit, setEdit] = useState(false);
+  const [deleted, setDeleted] = useState(false);
+
+  const onClickEdit = () => {
+    setEdit(true);
+  }
+  //al Componente EditBrand se debe pasar tambien el id de la marca que estoy editando
+
+  const onClickDelete = () => {
+    setDeleted(true);
+  }
   return (
     <div>
       <Box display="flex" boxShadow={2} my={1} flex={1} justifyContent="space-between">
@@ -21,15 +36,27 @@ function Location({nameLocation}) {
           
         </Box>
         <Box mx={1} display="flex" >
-        <IconButton edge="end" aria-label="delete">
+        <Tooltip title="Editar ubicación" arrow>
+        <IconButton edge="end" aria-label="edit" onClick={onClickEdit}>
           <EditIcon />
         </IconButton>
-        <IconButton edge="end" aria-label="delete">
+        </Tooltip>
+        <Tooltip title="Eliminar ubicación" arrow>
+        <IconButton edge="end" aria-label="delete" onClick={onClickDelete}>
           <DeleteIcon />
         </IconButton>
+        </Tooltip>
         
         </Box>
       </Box>
+      <EditLocation
+        edit={edit}
+        setEdit={setEdit}
+      />
+      <DeleteLocation 
+        deleted={deleted}
+        setDeleted={setDeleted}
+      />
       
     </div>
   )

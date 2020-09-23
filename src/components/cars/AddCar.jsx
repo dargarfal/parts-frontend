@@ -46,7 +46,7 @@ function AddCar() {
       <div className={classes.offset}></div>
       <Box display="flex" >
         <Sidebar />
-        <Box display="flex" flexDirection="column" flex={1}>
+        <Box display="flex" flexDirection="column" flex={1} my={2}>
         <Box mt={3} flex={1} p={2} bgcolor="#FFF" mx={2} boxShadow={2}>
           <Box display="flex">
             <Box>

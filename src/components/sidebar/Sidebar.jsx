@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
@@ -21,6 +21,9 @@ import LowPriorityIcon from "@material-ui/icons/LowPriority";
 import EuroIcon from "@material-ui/icons/Euro";
 
 import { Link } from "react-router-dom";
+
+//Context
+import authContext from "../../context/authentication/authContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +57,23 @@ function Sidebar() {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
+  const authsContext = useContext(authContext);
+  const { usuario, autenticado, usuarioAutenticado } = authsContext;
+
+  useEffect(() => {
+    usuarioAutenticado();
+    //eslint-disable-next-line
+
+    if(usuario.userRole === 'administrador'){
+      setShowAdmin(true);
+    }else{
+      setShowAdmin(false);
+    }
+  }, [])
+
+
+  const [showadmin, setShowAdmin] = useState(false);
+
   return (
     <Drawer
       className={classes.drawer}
@@ -63,7 +83,7 @@ function Sidebar() {
       }}
     >
       <Toolbar />
-      <Box mt={3} ml={2} fontWeight="bolder" textAlign="center">
+      <Box mt={2} ml={2} fontWeight="bolder" textAlign="center">
         <Button
           variant="contained"
           color="secondary"
@@ -149,29 +169,33 @@ function Sidebar() {
         </List>
 
         <Divider />
-        <Box mt={1} ml={2} fontWeight="bolder">
-          Gestión de Usuarios
-        </Box>
-        <List>
-          <Link to="/users" className={classes.link}>
-            <ListItem button>
-              <ListItemIcon>
-                <PeopleAltIcon />
-              </ListItemIcon>
-              <ListItemText primary="Gestión de usuarios" />
-            </ListItem>
-          </Link>
-          <Link to="/users" className={classes.link}>
-            <ListItem button>
-              <ListItemIcon>
-                <VpnKeyIcon />
-              </ListItemIcon>
-              <ListItemText primary="Gestionar permisos" />
-            </ListItem>
-          </Link>
-        </List>
+        {showadmin ? (
+          <Box>
+            <Box mt={1} ml={2} fontWeight="bolder">
+              Gestión de Usuarios
+            </Box>
+            <List>
+              <Link to="/users" className={classes.link}>
+                <ListItem button>
+                  <ListItemIcon>
+                    <PeopleAltIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Gestión de usuarios" />
+                </ListItem>
+              </Link>
+              <Link to="/users" className={classes.link}>
+                <ListItem button>
+                  <ListItemIcon>
+                    <VpnKeyIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Gestionar permisos" />
+                </ListItem>
+              </Link>
+            </List>
 
-        <Divider />
+            <Divider />
+          </Box>
+        ) : null}
       </div>
     </Drawer>
   );

@@ -17,6 +17,8 @@ import Alerta from '../alert/Alerta';
 import authContext from '../../context/authentication/authContext';
 import alertaContext from '../../context/alert/alertContext';
 
+import { toast } from 'react-toastify';
+
 
 
 
@@ -74,15 +76,19 @@ export default function SignInSide(props) {
     }
 
     if(mensaje){
-      mostrarAlerta(mensaje.title, mensaje.msg, mensaje.severity);
+     switch (mensaje.severity) {
+       case 'error':
+        toast.error(mensaje.msg);
+         break;
+       case 'success':
+        toast.success(mensaje.msg);  
+       default:
+         break;
+     }
+      
     }
 
-    //Para manejar cuando se muestra la alerta
-    if(alerta){
-      setshowalert(<Alerta />)
-    }else{
-      setshowalert(null)
-    }
+   
   }, [mensaje, autenticado, props.history])
 
   const classes = useStyles();
@@ -109,11 +115,12 @@ export default function SignInSide(props) {
       try {
         loginUser(user);
       } catch (error) {
-        mostrarAlerta('Error', 'Problema de conexión con el servidor', 'error');
+       
+        toast.error('Problema de conexión con el servidor');
       }
       
     }else{
-      mostrarAlerta('Error', 'Ambos campos deben ser llenados', 'error')
+      toast.error('Ambos campos deben ser llenados');
     }
   }
 

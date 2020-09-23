@@ -4,6 +4,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import HeaderCar from './HeaderCar';
 
@@ -68,6 +69,7 @@ const onSubmit = e  => {
           <Box>
             <TextField
               id="outlined-helperText"
+              type="number"
               label="Año"
               helperText="Inserte el año de fabricación del coche"
               variant="outlined"
@@ -80,14 +82,20 @@ const onSubmit = e  => {
           <Box>
             <TextField
               id="outlined-helperText"
+              type="number"
               label="Costo"
               helperText="Defina el costo del auto"
               variant="outlined"
               margin="normal"
               fullWidth
               size="small"
+              InputProps={{
+                startAdornment: <InputAdornment position="start">€</InputAdornment>,
+              }}
               
-            />
+            >
+              
+            </TextField>
           </Box>
         </Box>
         <Box

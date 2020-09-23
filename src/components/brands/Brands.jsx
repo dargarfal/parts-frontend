@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect} from 'react'
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,6 +8,10 @@ import MenuAppBar from '../appbar/MenuAppBar';
 import Sidebar from '../sidebar/Sidebar';
 import AddBrand from './AddBrand';
 import ListBrands from './ListBrands';
+
+//Context
+import brandContext from '../../context/brands/brandContext';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -24,6 +28,25 @@ const useStyles = makeStyles((theme) => ({
 
 function Brands() {
   const classes = useStyles();
+
+  const brandsContext = useContext(brandContext);
+  const { mensaje, marcaregistrada} = brandsContext;
+
+  useEffect(() => {
+    if(mensaje){
+      switch (mensaje.severity) {
+        case 'error':
+         toast.error(mensaje.msg);
+          break;
+        case 'success':
+         toast.success(mensaje.msg);  
+        default:
+          break;
+      }
+    }
+
+    
+  }, [mensaje, marcaregistrada]);
 
   return (
     <>

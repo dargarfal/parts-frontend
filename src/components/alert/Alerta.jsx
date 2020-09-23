@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import alertaContext from '../../context/alert/alertContext';
 
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -21,19 +22,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Alerta() {
 
   const alertasContext = useContext(alertaContext);
-  const { alerta } = alertasContext;
+  const { alerta, ocultarAlerta } = alertasContext;
 
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    
-    if(alerta !== null){
-      
-      setOpen(true);
-    }
-  },[alerta])
-
+  const [open, setOpen] = useState(true);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {

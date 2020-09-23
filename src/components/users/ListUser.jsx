@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import { Typography } from "@material-ui/core";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import Avatar from "@material-ui/core/Avatar";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
+
+import User from "./User";
+
+import userContext from "../../context/users/userContext";
 
 function ListUser() {
+  const usersContext = useContext(userContext);
+  const { users, getAllUsers, usuarioregistrado } = usersContext;
+
+  useEffect(() => {
+    getAllUsers();
+    //eslint-disable-next-line
+  }, [usuarioregistrado]);
+
   return (
     <div>
       <Box bgcolor="#FFF" p={2}>
@@ -29,62 +37,14 @@ function ListUser() {
                   <TableCell>Nombre completo</TableCell>
                   <TableCell>Correo electrónico</TableCell>
                   <TableCell>Fecha de alta</TableCell>
+                  <TableCell>Habilitado</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell>dargarfal</TableCell>
-                  <TableCell>
-                  <Avatar>
-                      A
-                    </Avatar>
-                  </TableCell>
-                  <TableCell>Ernesto D. García Falcón</TableCell>
-                  <TableCell>dargarfal@gmail.com</TableCell>
-                  <TableCell>11/09/2020 </TableCell>
-                  <TableCell>
-                    <Box display="flex">
-                      <Box mx={1}>
-                        <IconButton edge="end" aria-label="delete">
-                          <EditIcon />
-                        </IconButton>
-                      </Box>
-                      <Box mx={1}>
-                        <IconButton edge="end" aria-label="delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Box>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-
-                <TableRow>
-                  <TableCell>dargarfal</TableCell>
-                  <TableCell>
-                    <Avatar>
-                      U
-                    </Avatar>
-                  </TableCell>
-                  <TableCell>Ernesto D. García Falcón</TableCell>
-                  <TableCell>dargarfal@gmail.com</TableCell>
-                  <TableCell>11/09/2020 </TableCell>
-                  <TableCell>
-                    <Box display="flex">
-                      <Box mx={1}>
-                        <IconButton edge="end" aria-label="delete">
-                          <EditIcon />
-                        </IconButton>
-                      </Box>
-                      <Box mx={1}>
-                        <IconButton edge="end" aria-label="delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Box>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-
+                {users.map((user) => (
+                  <User key={user._id} user={user} />
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
