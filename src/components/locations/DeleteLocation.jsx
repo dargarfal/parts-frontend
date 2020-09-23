@@ -1,12 +1,15 @@
-import React, { Fragment, useState} from "react";
+import React, { Fragment, useContext } from "react";
 
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import MuiAlert from "@material-ui/lab/Alert";
 import { Box } from "@material-ui/core";
+
+//Context
+import locationContext from "../../context/locations/locationContext";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -17,78 +20,50 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0.5),
   },
   all: {
-    backgroundColor: 'primary'
-  }
+    backgroundColor: "primary",
+  },
 }));
 
-
-function DeleteLocation({deleted, setDeleted}) {
+function DeleteLocation({ deleted, setDeleted, location }) {
   const classes = useStyles();
 
-  /*const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    
-    setDeleted(false);
-    alert('cerrado sin accion')
-  };*/
+  const locationsContext = useContext(locationContext);
+  const { deleteLocation } = locationsContext;
 
   const handleClose = () => {
     setDeleted(false);
-   
-  }
+  };
 
   const onEliminarUbicacion = () => {
-   
-    //aqui se llama al context para eliminar
-    setDeleted(false)
-    
-  }
+    deleteLocation(location._id);
+    setDeleted(false);
+  };
 
   return (
     <div>
-      
-      
       <Snackbar
         className={classes.all}
-        anchorOrigin={{vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={deleted}
-        
-        action={
-          <Fragment>
-            <Button color="#000" size="small" onClick={onEliminarUbicacion}>
-              SI, Eliminar...
-            </Button>
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              className={classes.close}
-              onClick={handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Fragment>
-        }
       >
         <Alert onClose={handleClose} severity="error">
           <Box display="flex" alignItems="center">
-          <Box>
-        "¿Está seguro que desea eliminar la Ubicación definitivamente?"
-        </Box>
-        <Box mx={2}>
-        <Button
-              aria-label="close"
-              color="inherit"
-              className={classes.close}
-              onClick={handleClose}
-              variant="contained"
-              color="primary"
-            >
-              SI, Eliminar...
-            </Button>
+            <Box>
+              "¿Está seguro que desea eliminar la Ubicación definitivamente?"
             </Box>
+            <Box mx={2}>
+              <Button
+                aria-label="close"
+                color="inherit"
+                className={classes.close}
+                onClick={onEliminarUbicacion}
+                variant="contained"
+                color="primary"
+              >
+                SI, Eliminar...
+              </Button>
             </Box>
+          </Box>
         </Alert>
       </Snackbar>
     </div>

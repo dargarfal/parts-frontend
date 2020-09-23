@@ -20,6 +20,7 @@ import AuthState from "./context/authentication/authState";
 import AlertState from "./context/alert/alertState";
 import UserState from "./context/users/userState";
 import BrandState from "./context/brands/brandState";
+import LocationState from "./context/locations/locationState";
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import red from "@material-ui/core/colors/red";
@@ -49,6 +50,7 @@ function App() {
         <AlertState>
           <UserState>
             <BrandState>
+            <LocationState>
               <Router>
                 <Switch>
                   <Route exact path="/" component={Login} />
@@ -62,6 +64,7 @@ function App() {
                   <RoutePrivate exact path="/adduser" component={AddUser} />
                 </Switch>
               </Router>
+              </LocationState>
             </BrandState>
           </UserState>
         </AlertState>

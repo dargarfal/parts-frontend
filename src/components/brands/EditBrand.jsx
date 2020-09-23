@@ -35,6 +35,10 @@ function EditBrand({ edit, setEdit, brand }) {
       toast.error("Campos vacios, no se actualizó la Marca");
     } else {
       updateBrand(brand._id, newbrand);
+      setNewBrand({
+        nameBrand: "",
+        logoBrand: ""
+      })
       setEdit(false);
     }
   };
