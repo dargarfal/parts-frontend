@@ -1,17 +1,18 @@
-import React, { useContext, useEffect} from 'react'
+import React, { useContext, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 
 //Components
-import MenuAppBar from '../appbar/MenuAppBar';
-import Sidebar from '../sidebar/Sidebar';
-import AddBrand from './AddBrand';
-import ListBrands from './ListBrands';
+import MenuAppBar from "../appbar/MenuAppBar";
+import Sidebar from "../sidebar/Sidebar";
+import AddBrand from "./AddBrand";
+import ListBrands from "./ListBrands";
+
+import { toast } from "react-toastify";
 
 //Context
-import brandContext from '../../context/brands/brandContext';
-import { toast } from 'react-toastify';
+import brandContext from "../../context/brands/brandContext";
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -20,59 +21,52 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.secondary,
-  }
+  },
 }));
-
 
 function Brands() {
   const classes = useStyles();
 
   const brandsContext = useContext(brandContext);
-  const { mensaje, marcaregistrada} = brandsContext;
+  const { mensaje, marcaregistrada } = brandsContext;
 
   useEffect(() => {
-    if(mensaje){
+    if (mensaje) {
       switch (mensaje.severity) {
-        case 'error':
-         toast.error(mensaje.msg);
+        case "error":
+          toast.error(mensaje.msg);
           break;
-        case 'success':
-         toast.success(mensaje.msg);  
+        case "success":
+          toast.success(mensaje.msg);
         default:
           break;
       }
     }
-
-    
   }, [mensaje, marcaregistrada]);
 
   return (
     <>
-    <MenuAppBar />
-    <div className={classes.offset}></div>
-   
-    <Box display="flex" flexDirection="row">
-    
-    <Sidebar />
-    
+      <MenuAppBar />
+      <div className={classes.offset}></div>
 
-    <Box mt={3} ml={2} flexGrow={1}>
-    <Grid container spacing={3} xs={12} > 
-    <Grid item xs={5}>
-      <AddBrand />
-     </Grid> 
-    <Grid item xs={7} >
-      <ListBrands />
-    </Grid>
-      </Grid>      
+      <Box display="flex" flexDirection="row">
+        <Sidebar />
+
+        <Box mt={3} ml={2} flexGrow={1}>
+          <Grid container spacing={3} xs={12}>
+            <Grid item xs={5}>
+              <AddBrand />
+            </Grid>
+            <Grid item xs={7}>
+              <ListBrands />
+            </Grid>
+          </Grid>
+        </Box>
       </Box>
-    
-   
-    </Box>
     </>
-  )
+  );
 }
 
-export default Brands
+export default Brands;

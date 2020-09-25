@@ -64,13 +64,12 @@ function Sidebar() {
     usuarioAutenticado();
     //eslint-disable-next-line
 
-    if(usuario.userRole === 'administrador'){
+    if (usuario.userRole === "administrador") {
       setShowAdmin(true);
-    }else{
+    } else {
       setShowAdmin(false);
     }
-  }, [])
-
+  }, []);
 
   const [showadmin, setShowAdmin] = useState(false);
 

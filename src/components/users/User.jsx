@@ -66,7 +66,7 @@ function User({ user }) {
           {user.userEmail}
         </TableCell>
         <TableCell className={!user.userEnable ? classes.disable : null}>
-          {user.createAt}
+          {user.createAt.slice(0, 10)}
         </TableCell>
         <TableCell>
           <Tooltip
@@ -81,7 +81,7 @@ function User({ user }) {
               name="checked"
               inputProps={{ "aria-label": "primary checkbox" }}
               onChange={onChangeStatus}
-              disabled={user.userName === "dargarfal" ? true : false}
+              disabled={user.userName === "ernesto" ? true : false}
             />
           </Tooltip>
         </TableCell>

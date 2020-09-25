@@ -28,11 +28,7 @@ function ListLocations() {
   const classes = useStyles();
 
   const locationsContext = useContext(locationContext);
-  const { locations, locationregistrada, getAllLocatios } = locationsContext;
-
-  useEffect(() => {
-    getAllLocatios();
-  }, [locationregistrada]);
+  const { locations } = locationsContext;
 
   return (
     <div>

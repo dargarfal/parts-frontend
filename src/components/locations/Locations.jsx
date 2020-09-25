@@ -30,7 +30,7 @@ function Locations() {
   const classes = useStyles();
 
   const locationsContext = useContext(locationContext);
-  const { mensaje, locationregistrada } = locationsContext;
+  const { mensaje } = locationsContext;
 
   useEffect(() => {
     if (mensaje) {
@@ -44,7 +44,7 @@ function Locations() {
           break;
       }
     }
-  }, [mensaje, locationregistrada]);
+  }, [mensaje]);
 
   return (
     <>

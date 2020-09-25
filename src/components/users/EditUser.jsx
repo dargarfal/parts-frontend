@@ -26,9 +26,8 @@ import userContext from "../../context/users/userContext";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 function EditUser({ edit, setEdit, user, history }) {
- 
   const usersContext = useContext(userContext);
-  const { mensaje, usuarioregistrado, currentuser, updateUser } = usersContext;
+  const { mensaje, updateUser } = usersContext;
 
   const [changepass, setChangePass] = useState(false);
 
@@ -47,15 +46,12 @@ function EditUser({ edit, setEdit, user, history }) {
           break;
         case "success":
           toast.success(mensaje.msg);
+          setEdit(false);
         default:
           break;
       }
     }
-
-    if (usuarioregistrado) {
-      setEdit(false);
-    }
-  }, [mensaje, usuarioregistrado]);
+  }, [mensaje]);
 
   const onAddNewUser = (e) => {
     e.preventDefault();

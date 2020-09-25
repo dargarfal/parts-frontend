@@ -27,7 +27,7 @@ function AddUser(props) {
   const classes = useStyles();
 
   const usersContext = useContext(userContext);
-  const { mensaje, usuarioregistrado, addNewUser } = usersContext;
+  const { mensaje, addNewUser } = usersContext;
 
   useEffect(() => {
     if (mensaje) {
@@ -37,15 +37,12 @@ function AddUser(props) {
           break;
         case "success":
           toast.success(mensaje.msg);
+          props.history.push("/users");
         default:
           break;
       }
     }
-
-    if (usuarioregistrado) {
-      props.history.push("/users");
-    }
-  }, [mensaje, usuarioregistrado]);
+  }, [mensaje]);
 
   const [userName, setUserName] = useState("");
   const [fulluserName, setFullUserName] = useState("");

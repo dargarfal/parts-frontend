@@ -9,18 +9,16 @@ import {
   REGISTRO_ERROR,
   REINICIAR,
   ACTUALIZAR_USUARIO,
-  OBTENER_USUARIOS, 
+  OBTENER_USUARIOS,
   CAMBIAR_ESTADO,
-  OBTENER_UN_USUARIO
+  OBTENER_UN_USUARIO,
 } from "../../types";
-
 
 const UserState = (props) => {
   const initialState = {
     users: [],
     currentuser: null,
     mensaje: null,
-    usuarioregistrado: null
   };
 
   const [state, dispatch] = useReducer(userReducer, initialState);
@@ -38,18 +36,19 @@ const UserState = (props) => {
         severity: "success",
       };
 
-        dispatch({
-          type: REGISTRO_EXITOSO,
-          payload: alert
-        });
+      dispatch({
+        type: REGISTRO_EXITOSO,
+        payload: {
+          alert,
+          newuser: reply.data,
+        },
+      });
 
       setTimeout(() => {
         dispatch({
-          type: REINICIAR
+          type: REINICIAR,
         });
-      }, 3000);  
-      
-
+      }, 1000);
     } catch (error) {
       let alert;
 
@@ -77,36 +76,31 @@ const UserState = (props) => {
 
   //Get all users
   const getAllUsers = async () => {
-
     try {
-      const reply = await clienteAxios.get('/api/users');
+      const reply = await clienteAxios.get("/api/users");
 
       dispatch({
         type: OBTENER_USUARIOS,
-        payload: reply.data
-      })
+        payload: reply.data,
+      });
     } catch (error) {
-
       alert = {
         title: "Error",
         msg: error.response.data.msg,
         severity: "error",
-      }; 
+      };
 
       dispatch({
         type: REGISTRO_ERROR,
         payload: alert,
       });
     }
-  }
+  };
 
   //Update an user -------------------------------------------------------
   const updateUser = async (id, user) => {
-
     try {
       const reply = await clienteAxios.put(`/api/users/${id}`, user);
-
-      console.log(reply);
 
       const alert = {
         title: "Exito",
@@ -114,18 +108,19 @@ const UserState = (props) => {
         severity: "success",
       };
 
-        dispatch({
-          type: ACTUALIZAR_USUARIO,
-          payload: alert
-        });
+      dispatch({
+        type: ACTUALIZAR_USUARIO,
+        payload: {
+          alert,
+          updateuser: reply.data,
+        },
+      });
 
       setTimeout(() => {
         dispatch({
-          type: REINICIAR
+          type: REINICIAR,
         });
-      }, 3000);  
-
-
+      }, 1000);
     } catch (error) {
       let alert;
 
@@ -145,63 +140,63 @@ const UserState = (props) => {
 
       dispatch({
         type: REGISTRO_ERROR,
-        payload: alert
+        payload: alert,
       });
     }
-  }
+  };
 
   //Change user's status
-  const changeStatusUser = async id => {
-    
+  const changeStatusUser = async (id) => {
     try {
+      const reply = await clienteAxios.put(`/api/users/enable/${id}`);
 
-      await clienteAxios.put(`/api/users/enable/${id}`);
+      const alert = {
+        title: "Exito",
+        msg: "Estado cambiado",
+        severity: "success",
+      };
 
       dispatch({
-        type: CAMBIAR_ESTADO
-      })
-
+        type: CAMBIAR_ESTADO,
+        payload: reply.data,
+      });
     } catch (error) {
-      alert = {
+      const alert = {
         title: "Error",
         msg: error.response.data.msg,
         severity: "error",
-      }; 
-      
+      };
+
       dispatch({
         type: REGISTRO_ERROR,
         payload: alert,
       });
     }
-  }
+  };
 
   //Get one user
-  const getOneUser = async id => {
-    
+  const getOneUser = async (id) => {
     try {
       const reply = await clienteAxios.get(`/api/users/${id}`);
       console.log(reply);
 
       dispatch({
         type: OBTENER_UN_USUARIO,
-        payload: reply.data
-      })
-
+        payload: reply.data,
+      });
     } catch (error) {
       alert = {
         title: "Error",
         msg: error.response.data.msg,
         severity: "error",
-      }; 
-      
+      };
+
       dispatch({
         type: REGISTRO_ERROR,
         payload: alert,
       });
     }
-  } 
-  
-
+  };
 
   return (
     <userContext.Provider
@@ -214,7 +209,7 @@ const UserState = (props) => {
         getAllUsers,
         addNewUser,
         updateUser,
-        getOneUser
+        getOneUser,
       }}
     >
       {props.children}

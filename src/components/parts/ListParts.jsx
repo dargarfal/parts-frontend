@@ -1,12 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Box, Typography, Button, Divider } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import Tooltip from "@material-ui/core/Tooltip";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -14,35 +7,30 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
+//Context
+import partContext from "../../context/parts/partContext";
+
 import Part from "./Part";
 
-import AddPart from "./AddPart";
+function ListParts({ filtercar }) {
+  const partsContext = useContext(partContext);
+  const { parts } = partsContext;
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
+  const [filtred, setFiltred] = useState([]);
 
-function ListParts() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  useEffect(() => {
+    if (filtercar) {
+      const fil = parts.filter((party) => party.ownercarPart === filtercar);
+      setFiltred(fil);
+      console.log(fil);
+    } else {
+      setFiltred(parts);
+    }
+    //eslint-disable-next-line
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+    console.log(filtercar);
+  }, [parts]);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   return (
     <div>
       <Box
@@ -55,33 +43,6 @@ function ListParts() {
         justifyContent="space-between"
       >
         <Typography variant="h5">Listado de piezas</Typography>
-
-        <Box >
-          <Tooltip title="Adicionar pieza" arrow>
-            <Fab color="primary" aria-label="add" onClick={handleOpen}>
-              <AddIcon />
-            </Fab>
-          </Tooltip>
-        </Box>
-
-       
-
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            <AddPart />
-          </Fade>
-        </Modal>
       </Box>
       <Divider />
       <Box bgcolor="#FFF" boxShadow={2}>
@@ -91,7 +52,7 @@ function ListParts() {
               <TableRow>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Código</TableCell>
-                <TableCell>Matrícula coche</TableCell>
+                <TableCell>Matrícula</TableCell>
                 <TableCell>Logo</TableCell>
                 <TableCell>Marca</TableCell>
                 <TableCell>Modelo</TableCell>
@@ -102,7 +63,9 @@ function ListParts() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <Part />
+              {filtred.map((part) => (
+                <Part key={part._id} part={part} />
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

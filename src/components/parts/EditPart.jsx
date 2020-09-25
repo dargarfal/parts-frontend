@@ -17,17 +17,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AddPart({ idcar, setOpen }) {
+function EditPart({ part, setOpen }) {
   const classes = useStyles();
 
   const partsContext = useContext(partContext);
-  const { addNewPart } = partsContext;
+  const { updatePart } = partsContext;
 
   const [newpart, setNewPart] = useState({
-    namePart: "",
-    codePart: "",
-    pricePart: "",
-    ownercarPart: idcar,
+    namePart: part.namePart,
+    codePart: part.codePart,
+    pricePart: part.pricePart,
   });
 
   const { namePart, codePart, pricePart } = newpart;
@@ -42,18 +41,18 @@ function AddPart({ idcar, setOpen }) {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (namePart !== "") {
-      addNewPart(newpart);
-      setOpen(false);
+    if (namePart === "" || codePart === "" || pricePart === "") {
+      toast.error("NO se pueden actualizar campos vacíos.");
     } else {
-      toast.error("El nombre de la pieza debe ser registrado");
+      updatePart(part._id, newpart);
+      setOpen(false);
     }
   };
   return (
     <div>
       <Box className={classes.container} my={2} mx={2} flex={1} boxShadow={2}>
         <Box>
-          <Typography variant="h5">Adicionar pieza a este auto</Typography>
+          <Typography variant="h5">Editar pieza</Typography>
         </Box>
 
         <form onSubmit={onSubmit}>
@@ -122,4 +121,4 @@ function AddPart({ idcar, setOpen }) {
   );
 }
 
-export default AddPart;
+export default EditPart;

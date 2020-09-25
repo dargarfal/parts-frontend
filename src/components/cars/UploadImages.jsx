@@ -3,12 +3,11 @@ import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import HeaderCar from "./HeaderCar";
-import SendIcon from '@material-ui/icons/Send';
-import './UploadImages.css';
+import SendIcon from "@material-ui/icons/Send";
+import "./UploadImages.css";
 
 //Importando el Context de User
-import authContex from '../../context/authentication/authContext';
-
+import authContex from "../../context/authentication/authContext";
 
 //Configuración Filepond
 // Import React FilePond
@@ -25,14 +24,15 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
+//Context
+import carContext from "../../context/cars/carContext";
+
 // Register the plugins
 registerPlugin(
   FilePondPluginImageExifOrientation,
   FilePondPluginImagePreview,
   FilePondPluginFileValidateType
 );
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,8 +44,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function UploadImages({setStep}) {
+function UploadImages({ setStep }) {
   const classes = useStyles();
+
+  //Car Context
+  const carsContext = useContext(carContext);
+  const { currentcar } = carsContext;
 
   const authsContext = useContext(authContex);
   const { token } = authsContext;
@@ -55,54 +59,53 @@ function UploadImages({setStep}) {
   //Manejando visibilidad del boton de continuar
   const [continuar, setContinuar] = useState(true);
 
-  useEffect(() => {
+  const [id, setId] = useState();
 
-    if(files.length > 4){
-      setContinuar(false)
-    }else{
-      setContinuar(true)
+  useEffect(() => {
+    if (files.length > 4) {
+      setContinuar(false);
+    } else {
+      setContinuar(true);
     }
 
-    console.log(options.process.onload);
-    
-  }, [files])
-
-  
+    if (currentcar) {
+      setId(currentcar._id);
+    }
+  }, [files, currentcar]);
 
   const options = {
     url: `${process.env.REACT_APP_API_URL}`,
     process: {
-      url: "/api/images/5f60b86025f2009459e096ab",
+      url: `/api/images/${id}`,
       method: "POST",
       headers: {
-        "x-auth-token": `${token}`
-        
+        "x-auth-token": `${token}`,
       },
       onload: (response) => response.key,
-    }
+    },
   };
 
   const type = ["image/jpeg"];
 
-  const onClick = e  => {
+  const onClick = (e) => {
     e.preventDefault();
     setStep(2);
-  } 
+  };
   return (
     <div className={classes.root}>
       <Box className={classes.container} my={2} mx={2} flex={1} boxShadow={2}>
         <HeaderCar titulo="Imagenes del coche" />
 
         <Box my={4}>
-        <Button
-              onClick={onClick}
-              variant="contained"
-              color="primary"
-              endIcon={<SendIcon />}
-              
-            >
-              Listo, continuar...
-            </Button>
+          <Button
+            onClick={onClick}
+            variant="contained"
+            color="primary"
+            endIcon={<SendIcon />}
+            //disabled={continuar}
+          >
+            Listo, continuar...
+          </Button>
         </Box>
         <Box>
           <FilePond

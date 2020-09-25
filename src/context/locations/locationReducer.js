@@ -5,15 +5,16 @@ import {
   EDITAR_LOCATION,
   OBTENER_LOCATIONS,
   ELIMINAR_UBICACION,
+  REINICIAR_LOCATION,
 } from "../../types";
 
 export default (state, action) => {
   switch (action.type) {
-    case EDITAR_LOCATION:
     case GUARDAR_LOCATION_EXITO:
       return {
         ...state,
-        mensaje: action.payload,
+        locations: [...state.locations, action.payload.newlocation],
+        mensaje: action.payload.alert,
         locationregistrada: true,
       };
     case GUARDAR_LOCATION_ERROR:
@@ -21,6 +22,16 @@ export default (state, action) => {
         ...state,
         mensaje: action.payload,
         locationregistrada: false,
+      };
+    case EDITAR_LOCATION:
+      return {
+        ...state,
+        locations: state.locations.map((location) =>
+          location._id === action.payload.updatelocation._id
+            ? action.payload.updatelocation
+            : location
+        ),
+        mensaje: action.payload.alert,
       };
     case OBTENER_LOCATIONS:
       return {
@@ -32,8 +43,15 @@ export default (state, action) => {
     case ELIMINAR_UBICACION:
       return {
         ...state,
-        mensaje: action.payload,
-        locationregistrada: true,
+        mensaje: action.payload.alert,
+        locations: state.locations.filter(
+          (location) => location._id !== action.payload.locationid
+        ),
+      };
+    case REINICIAR_LOCATION:
+      return {
+        ...state,
+        mensaje: null,
       };
     default:
       return state;

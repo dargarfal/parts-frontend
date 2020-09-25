@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -11,12 +11,17 @@ import DoneAllIcon from "@material-ui/icons/DoneAll";
 
 import HeaderCar from "./HeaderCar";
 import AddPart from "../parts/AddPart";
+//import ListPartsFilter from "../parts/ListPartsFilter";
+import ListParts from "../parts/ListParts";
 
 import { Link } from "react-router-dom";
 
-//Alerta
-import Alerta from '../alert/Alerta'; 
-import alertaContext from '../../context/alert/alertContext';
+import { toast } from "react-toastify";
+
+//Context
+import partContext from "../../context/parts/partContext";
+//Context
+import carContext from "../../context/cars/carContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,30 +45,34 @@ const useStyles = makeStyles((theme) => ({
   link: {
     textDecoration: "none",
     color: "#3e3e3e",
-  }
+  },
 }));
 
 function AddPartsCar(props) {
   const classes = useStyles();
 
-  //Alerta
-  const alertasContext = useContext(alertaContext);
-  const { alerta, mostrarAlerta } = alertasContext;
-  //State para manejar cuando se muestra la alerta
-  const [showalert, setshowalert] = useState();
+  //Car Context
+  const carsContext = useContext(carContext);
+  const { currentcar } = carsContext;
+
+  const partsContext = useContext(partContext);
+  const { mensaje, partregistrada, parts } = partsContext;
 
   useEffect(() => {
-
-    //Para manejar cuando se muestra la alerta
-    if(alerta){
-      setshowalert(<Alerta />)
-    }else{
-      setshowalert(null)
+    if (mensaje) {
+      switch (mensaje.severity) {
+        case "error":
+          toast.error(mensaje.msg);
+          break;
+        case "success":
+          toast.success(mensaje.msg);
+        default:
+          break;
+      }
     }
-   
-  }, [alerta])
+  }, [mensaje, partregistrada]);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -74,15 +83,11 @@ function AddPartsCar(props) {
   };
 
   const onClick = (props) => {
-    mostrarAlerta("Exito", "Choche guardado con exito", "success");
+    toast.success("Coche guardado");
   };
 
   return (
     <div>
-      {
-      //si existe se muestra la alerta
-      showalert
-      }
       <Box className={classes.container} my={2} mx={2} flex={1} boxShadow={2}>
         <HeaderCar titulo="Agregando piezas al coche" />
 
@@ -95,20 +100,24 @@ function AddPartsCar(props) {
             </Tooltip>
           </Box>
           <Box>
-          <Link to="/cars" className={classes.link} >
-            <Button
-              onClick={onClick}
-              variant="contained"
-              color="primary"
-              endIcon={<DoneAllIcon />}
-            >
-              Listo, Terminar...
-            </Button>
+            <Link to="/cars" className={classes.link}>
+              <Button
+                onClick={onClick}
+                variant="contained"
+                color="primary"
+                endIcon={<DoneAllIcon />}
+              >
+                Listo, Terminar...
+              </Button>
             </Link>
           </Box>
         </Box>
 
-        <Box></Box>
+        {parts.length !== 0 ? (
+          <Box>
+            <ListParts filtercar={currentcar._id} />
+          </Box>
+        ) : null}
 
         <Modal
           aria-labelledby="transition-modal-title"
@@ -123,7 +132,10 @@ function AddPartsCar(props) {
           }}
         >
           <Fade in={open}>
-            <AddPart />
+            <AddPart
+              idcar={currentcar ? currentcar._id : null}
+              setOpen={setOpen}
+            />
           </Fade>
         </Modal>
       </Box>

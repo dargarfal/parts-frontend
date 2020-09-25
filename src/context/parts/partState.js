@@ -1,52 +1,52 @@
 import React, { useReducer } from "react";
 import clienteAxios from "../../config/axios";
 
-import brandContext from "./brandContext";
-import brandReducer from "./brandReducer";
+import partContext from "./partContext";
+import partReducer from "./partReducer";
 
 import {
-  OBTENER_MARCAS,
-  GUARDAR_MARCA_EXITO,
-  GUARDAR_MARCA_ERROR,
-  EDITAR_MARCA,
-  OBTENER_UNA_MARCA,
-  REINICIAR_MARCA,
+  GUARDAR_PIEZA_EXITO,
+  GUARDAR_PIEZA_ERROR,
+  OBTENER_ALL_PIEZAS,
+  OBTENER_PIEZAS_DE_COCHE,
+  ACTUALIZAR_PIEZA,
+  REINICIAR_PART,
 } from "../../types";
 
-const BrandState = (props) => {
+const PartState = (props) => {
   const initialState = {
-    brands: [],
+    parts: [],
     mensaje: null,
-    marcaregistrada: null,
-    currentbrand: null,
+    partgistrada: null,
+    currentpart: null,
+    partsfilter: [],
   };
 
-  const [state, dispatch] = useReducer(brandReducer, initialState);
+  const [state, dispatch] = useReducer(partReducer, initialState);
 
   //Functions
-
-  //Add new brand -------------------------------------------------
-  const addNewBrand = async (brand) => {
+  // Add new part ------------------------------------------
+  const addNewPart = async (newpart) => {
     try {
-      const reply = await clienteAxios.post("/api/brands", brand);
+      const reply = await clienteAxios.post("/api/parts", newpart);
 
       const alert = {
         title: "Exito",
-        msg: "Nueva Marca adicionada",
+        msg: "Pieza agregada",
         severity: "success",
       };
 
       dispatch({
-        type: GUARDAR_MARCA_EXITO,
+        type: GUARDAR_PIEZA_EXITO,
         payload: {
           alert,
-          newbrand: reply.data,
+          newpart: reply.data,
         },
       });
 
       setTimeout(() => {
         dispatch({
-          type: REINICIAR_MARCA,
+          type: REINICIAR_PART,
         });
       }, 1000);
     } catch (error) {
@@ -67,19 +67,19 @@ const BrandState = (props) => {
       }
 
       dispatch({
-        type: GUARDAR_MARCA_ERROR,
+        type: GUARDAR_PIEZA_ERROR,
         payload: alert,
       });
     }
   };
 
-  //Get alls brands
-  const getAllBrands = async () => {
+  //Get parts of car
+  const getPartOfCar = async (idcar) => {
     try {
-      const reply = await clienteAxios.get("/api/brands");
-
+      const reply = await clienteAxios.get(`/api/parts/car/${idcar}`);
+      console.log(reply.data);
       dispatch({
-        type: OBTENER_MARCAS,
+        type: OBTENER_PIEZAS_DE_COCHE,
         payload: reply.data,
       });
     } catch (error) {
@@ -90,34 +90,34 @@ const BrandState = (props) => {
       };
 
       dispatch({
-        type: GUARDAR_MARCA_ERROR,
+        type: GUARDAR_PIEZA_ERROR,
         payload: alert,
       });
     }
   };
 
-  //Update Brand
-  const updateBrand = async (id, newbrand) => {
+  //Update part
+  const updatePart = async (idpart, newpart) => {
     try {
-      const reply = await clienteAxios.put(`/api/brands/${id}`, newbrand);
+      const reply = await clienteAxios.put(`/api/parts/${idpart}`, newpart);
 
       const alert = {
         title: "Exito",
-        msg: "Marca actualizada",
+        msg: "Pieza actualizada",
         severity: "success",
       };
 
       dispatch({
-        type: EDITAR_MARCA,
+        type: ACTUALIZAR_PIEZA,
         payload: {
           alert,
-          updatebrand: reply.data,
+          newpart: reply.data,
         },
       });
 
       setTimeout(() => {
         dispatch({
-          type: REINICIAR_MARCA,
+          type: REINICIAR_PART,
         });
       }, 1000);
     } catch (error) {
@@ -128,19 +128,19 @@ const BrandState = (props) => {
       };
 
       dispatch({
-        type: GUARDAR_MARCA_ERROR,
+        type: GUARDAR_PIEZA_ERROR,
         payload: alert,
       });
     }
   };
 
-  //Get an brand
-  const getOneBrand = async (id) => {
+  //Get All parts
+  const getAllParts = async () => {
     try {
-      const reply = await clienteAxios.get(`/api/brands/${id}`);
+      const reply = await clienteAxios.get("/api/parts");
 
       dispatch({
-        type: OBTENER_UNA_MARCA,
+        type: OBTENER_ALL_PIEZAS,
         payload: reply.data,
       });
     } catch (error) {
@@ -151,28 +151,29 @@ const BrandState = (props) => {
       };
 
       dispatch({
-        type: GUARDAR_MARCA_ERROR,
+        type: GUARDAR_PIEZA_ERROR,
         payload: alert,
       });
     }
   };
 
   return (
-    <brandContext.Provider
+    <partContext.Provider
       value={{
+        parts: state.parts,
         mensaje: state.mensaje,
-        brands: state.brands,
-        marcaregistrada: state.marcaregistrada,
-        currentbrand: state.currentbrand,
-        addNewBrand,
-        getAllBrands,
-        updateBrand,
-        getOneBrand,
+        partgistrada: state.partgistrada,
+        currentpart: state.currentpart,
+        partsfilter: state.partsfilter,
+        addNewPart,
+        getPartOfCar,
+        getAllParts,
+        updatePart,
       }}
     >
       {props.children}
-    </brandContext.Provider>
+    </partContext.Provider>
   );
 };
 
-export default BrandState;
+export default PartState;

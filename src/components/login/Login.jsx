@@ -1,63 +1,62 @@
-import React, { useState, useContext, useEffect } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Copyright from '../copyright/Copyright';
+import React, { useState, useContext, useEffect } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Copyright from "../copyright/Copyright";
 
-import Alerta from '../alert/Alerta'; 
+import Alerta from "../alert/Alerta";
 
 //Context
-import authContext from '../../context/authentication/authContext';
-import alertaContext from '../../context/alert/alertContext';
+import authContext from "../../context/authentication/authContext";
+import alertaContext from "../../context/alert/alertContext";
 
-import { toast } from 'react-toastify';
-
-
-
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    height: "100vh",
   },
   image: {
-    backgroundImage: 'url(https://images.pexels.com/photos/461824/pexels-photo-461824.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)',
-    backgroundRepeat: 'no-repeat',
+    backgroundImage:
+      "url(https://images.pexels.com/photos/461824/pexels-photo-461824.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)",
+    backgroundRepeat: "no-repeat",
     backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+      theme.palette.type === "light"
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
+    backgroundSize: "cover",
+    backgroundPosition: "center",
   },
   paper: {
     margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
   title: {
-    marginBottom: 50
-  }
+    marginBottom: 50,
+  },
 }));
 
 export default function SignInSide(props) {
-
   const alertasContext = useContext(alertaContext);
   const { alerta, mostrarAlerta } = alertasContext;
 
@@ -67,69 +66,59 @@ export default function SignInSide(props) {
   //State para manejar cuando se muestra la alerta
   const [showalert, setshowalert] = useState();
 
-
   useEffect(() => {
-
-    if(autenticado){
-      
-      props.history.push('/dashboard');
+    if (autenticado) {
+      props.history.push("/dashboard");
     }
 
-    if(mensaje){
-     switch (mensaje.severity) {
-       case 'error':
-        toast.error(mensaje.msg);
-         break;
-       case 'success':
-        toast.success(mensaje.msg);  
-       default:
-         break;
-     }
-      
+    if (mensaje) {
+      switch (mensaje.severity) {
+        case "error":
+          toast.error(mensaje.msg);
+          break;
+        case "success":
+          toast.success(mensaje.msg);
+        default:
+          break;
+      }
     }
-
-   
-  }, [mensaje, autenticado, props.history])
+  }, [mensaje, autenticado, props.history]);
 
   const classes = useStyles();
 
   const [user, setUser] = useState({
     userName: "",
-    userPass: ""
-  })
+    userPass: "",
+  });
 
   const { userName, userPass } = user;
 
-  const onChance = e => {
+  const onChance = (e) => {
     setUser({
       ...user,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const onLogin = e => {
+  const onLogin = (e) => {
     e.preventDefault();
 
-    if(userName !== '' && userPass !== ''){
-
+    if (userName !== "" && userPass !== "") {
       try {
         loginUser(user);
       } catch (error) {
-       
-        toast.error('Problema de conexión con el servidor');
+        toast.error("Problema de conexión con el servidor");
       }
-      
-    }else{
-      toast.error('Ambos campos deben ser llenados');
+    } else {
+      toast.error("Ambos campos deben ser llenados");
     }
-  }
+  };
 
   return (
     <Grid container component="main" className={classes.root}>
-      
       {
-      //si existe se muestra la alerta
-      showalert
+        //si existe se muestra la alerta
+        showalert
       }
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -185,12 +174,8 @@ export default function SignInSide(props) {
             >
               Entrar
             </Button>
-            {alerta ?
-              <Alerta />
-                :
-              null
-            }
-            
+            {alerta ? <Alerta /> : null}
+
             <Box mt={5}>
               <Copyright />
             </Box>

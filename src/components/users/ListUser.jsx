@@ -15,12 +15,12 @@ import userContext from "../../context/users/userContext";
 
 function ListUser() {
   const usersContext = useContext(userContext);
-  const { users, getAllUsers, usuarioregistrado } = usersContext;
+  const { users, getAllUsers } = usersContext;
 
   useEffect(() => {
     getAllUsers();
     //eslint-disable-next-line
-  }, [usuarioregistrado]);
+  }, []);
 
   return (
     <div>

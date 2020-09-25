@@ -1,111 +1,101 @@
-import React, { useReducer } from 'react';
-import authContext from './authContext';
-import authReducer from './authReducer';
-import clienteAxios from '../../config/axios';
-import tokenAuth from '../../config/token';
+import React, { useReducer } from "react";
+import authContext from "./authContext";
+import authReducer from "./authReducer";
+import clienteAxios from "../../config/axios";
+import tokenAuth from "../../config/token";
 
-import { 
+import {
   REGISTRO_EXITOSO,
   REGISTRO_ERROR,
   OBTENER_USUARIO,
   LOGIN_EXITOSO,
   LOGIN_ERROR,
-  CERRAR_SESION
- } from '../../types';
-
+  CERRAR_SESION,
+} from "../../types";
 
 const AuthState = (props) => {
-
   const initialState = {
-    token: localStorage.getItem('token'),
+    token: localStorage.getItem("token"),
     autenticado: null,
     usuario: null,
     mensaje: null,
-    cargado: false
-  }
+    cargado: false,
+  };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   //Functions
-  const loginUser = async dataUser => {
-
+  const loginUser = async (dataUser) => {
     try {
-     const reply =  await clienteAxios.post('/api/login', dataUser);
+      const reply = await clienteAxios.post("/api/login", dataUser);
 
-     dispatch({
-       type: LOGIN_EXITOSO,
-       payload: reply.data
-     })
+      dispatch({
+        type: LOGIN_EXITOSO,
+        payload: reply.data,
+      });
 
-     usuarioAutenticado();
-
+      usuarioAutenticado();
     } catch (error) {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
 
       let alertaerror;
 
-      if(error.response.status === 406){
-          alertaerror = {
+      if (error.response.status === 406) {
+        alertaerror = {
           msg: error.response.data.errores[0].msg,
-          severity: 'error',
-          title: 'Error'
-        }
-      }else{
-          alertaerror = {
+          severity: "error",
+          title: "Error",
+        };
+      } else {
+        alertaerror = {
           msg: error.response.data.msg,
-          severity: 'error',
-          title: 'Error'
-        }
-      }    
+          severity: "error",
+          title: "Error",
+        };
+      }
 
       dispatch({
         type: LOGIN_ERROR,
-        payload: alertaerror
-      })
+        payload: alertaerror,
+      });
     }
-  }
+  };
 
   //Obteniendo el usuario autenticado
   const usuarioAutenticado = async () => {
-    
-    const token = localStorage.getItem('token');
-    
-    if(token){
+    const token = localStorage.getItem("token");
+
+    if (token) {
       tokenAuth(token);
-    } 
+    }
 
-      try {
-        const usuarioAuth = await clienteAxios.get('api/login');
-        
-        dispatch({
-          type: OBTENER_USUARIO,
-          payload: usuarioAuth.data
-        })
-        
-      } catch (error) {
-        
-        const alertaerror = {
-              msg: error.response.data.msg,
-              severity: 'error',
-              title: 'Error'
-        }  
+    try {
+      const usuarioAuth = await clienteAxios.get("api/login");
 
-        dispatch({
-          type: LOGIN_ERROR,
-          payload: alertaerror
-        })
-      }
-    
-  }
+      dispatch({
+        type: OBTENER_USUARIO,
+        payload: usuarioAuth.data,
+      });
+    } catch (error) {
+      const alertaerror = {
+        msg: error.response.data.msg,
+        severity: "error",
+        title: "Error",
+      };
+
+      dispatch({
+        type: LOGIN_ERROR,
+        payload: alertaerror,
+      });
+    }
+  };
 
   //Cerrando sesion
   const cerrarSesion = () => {
-
     dispatch({
-      type: CERRAR_SESION
-    })
-
-  }
+      type: CERRAR_SESION,
+    });
+  };
 
   return (
     <authContext.Provider
@@ -117,15 +107,12 @@ const AuthState = (props) => {
         cargado: state.cargado,
         loginUser,
         usuarioAutenticado,
-        cerrarSesion
+        cerrarSesion,
       }}
     >
       {props.children}
     </authContext.Provider>
-
-  )
-
-
-}
+  );
+};
 
 export default AuthState;

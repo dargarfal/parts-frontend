@@ -12,7 +12,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import CloseIcon from "@material-ui/icons/Close";
 
-
 import brandContext from "../../context/brands/brandContext";
 
 import { toast } from "react-toastify";
@@ -37,8 +36,8 @@ function EditBrand({ edit, setEdit, brand }) {
       updateBrand(brand._id, newbrand);
       setNewBrand({
         nameBrand: "",
-        logoBrand: ""
-      })
+        logoBrand: "",
+      });
       setEdit(false);
     }
   };

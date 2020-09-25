@@ -10,6 +10,7 @@ import {
   EDITAR_LOCATION,
   OBTENER_LOCATIONS,
   ELIMINAR_UBICACION,
+  REINICIAR_LOCATION,
 } from "../../types";
 
 const LocationState = (props) => {
@@ -29,14 +30,23 @@ const LocationState = (props) => {
 
       const alert = {
         title: "Exito",
-        msg: reply.data.msg,
+        msg: "Ubicación guardada",
         severity: "success",
       };
 
       dispatch({
         type: GUARDAR_LOCATION_EXITO,
-        payload: alert,
+        payload: {
+          alert,
+          newlocation: reply.data,
+        },
       });
+
+      setTimeout(() => {
+        dispatch({
+          type: REINICIAR_LOCATION,
+        });
+      }, 1000);
     } catch (error) {
       let alert;
 
@@ -62,7 +72,7 @@ const LocationState = (props) => {
   };
 
   //Get all locations
-  const getAllLocatios = async () => {
+  const getAllLocations = async () => {
     try {
       const reply = await clienteAxios.get("/api/locations");
 
@@ -89,15 +99,19 @@ const LocationState = (props) => {
     try {
       const reply = await clienteAxios.put(`/api/locations/${id}`, newlocation);
 
+      console.log(reply.data);
       const alert = {
         title: "Exito",
-        msg: reply.data.msg,
+        msg: "Ubicación actualizada",
         severity: "success",
       };
 
       dispatch({
         type: EDITAR_LOCATION,
-        payload: alert,
+        payload: {
+          alert,
+          updatelocation: reply.data,
+        },
       });
     } catch (error) {
       let alert;
@@ -136,8 +150,17 @@ const LocationState = (props) => {
 
       dispatch({
         type: ELIMINAR_UBICACION,
-        payload: alert,
+        payload: {
+          alert,
+          locationid: id,
+        },
       });
+
+      setTimeout(() => {
+        dispatch({
+          type: REINICIAR_LOCATION,
+        });
+      }, 1000);
     } catch (error) {
       const alert = {
         title: "Error",
@@ -159,7 +182,7 @@ const LocationState = (props) => {
         mensaje: state.mensaje,
         locationregistrada: state.locationregistrada,
         addNewLocation,
-        getAllLocatios,
+        getAllLocations,
         updateLocation,
         deleteLocation,
       }}

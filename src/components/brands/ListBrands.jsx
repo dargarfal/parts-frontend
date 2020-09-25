@@ -27,13 +27,7 @@ function ListBrands() {
   const classes = useStyles();
 
   const brandsContext = useContext(brandContext);
-  const { brands, marcaregistrada, getAllBrands } = brandsContext;
-
-  useEffect(() => {
-    getAllBrands();
-  }, [marcaregistrada]);
-
-  console.log(brands);
+  const { brands } = brandsContext;
 
   return (
     <div>

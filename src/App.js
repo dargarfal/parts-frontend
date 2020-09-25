@@ -21,6 +21,8 @@ import AlertState from "./context/alert/alertState";
 import UserState from "./context/users/userState";
 import BrandState from "./context/brands/brandState";
 import LocationState from "./context/locations/locationState";
+import CarState from "./context/cars/carState";
+import PartState from "./context/parts/partState";
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import red from "@material-ui/core/colors/red";
@@ -50,20 +52,36 @@ function App() {
         <AlertState>
           <UserState>
             <BrandState>
-            <LocationState>
-              <Router>
-                <Switch>
-                  <Route exact path="/" component={Login} />
-                  <RoutePrivate exact path="/dashboard" component={Dashboard} />
-                  <RoutePrivate exact path="/brands" component={Brands} />
-                  <RoutePrivate exact path="/locations" component={Locations} />
-                  <RoutePrivate exact path="/addcar" component={AddCar} />
-                  <RoutePrivate exact path="/cars" component={ListCars} />
-                  <RoutePrivate exact path="/parts" component={Parts} />
-                  <RoutePrivate exact path="/users" component={Users} />
-                  <RoutePrivate exact path="/adduser" component={AddUser} />
-                </Switch>
-              </Router>
+              <LocationState>
+                <CarState>
+                  <PartState>
+                    <Router>
+                      <Switch>
+                        <Route exact path="/" component={Login} />
+                        <RoutePrivate
+                          exact
+                          path="/dashboard"
+                          component={Dashboard}
+                        />
+                        <RoutePrivate exact path="/brands" component={Brands} />
+                        <RoutePrivate
+                          exact
+                          path="/locations"
+                          component={Locations}
+                        />
+                        <RoutePrivate exact path="/addcar" component={AddCar} />
+                        <RoutePrivate exact path="/cars" component={ListCars} />
+                        <RoutePrivate exact path="/parts" component={Parts} />
+                        <RoutePrivate exact path="/users" component={Users} />
+                        <RoutePrivate
+                          exact
+                          path="/adduser"
+                          component={AddUser}
+                        />
+                      </Switch>
+                    </Router>
+                  </PartState>
+                </CarState>
               </LocationState>
             </BrandState>
           </UserState>
