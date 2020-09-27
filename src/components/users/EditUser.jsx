@@ -86,6 +86,7 @@ function EditUser({ edit, setEdit, user, history }) {
     }
 
     updateUser(user._id, datauser);
+    
   };
 
   const handleChange = () => {

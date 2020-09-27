@@ -32,6 +32,7 @@ const CarState = (props) => {
         severity: "success",
       };
 
+      
       dispatch({
         type: GUARDAR_CAR_EXITO,
         payload: {
@@ -86,6 +87,42 @@ const CarState = (props) => {
     });
   };
 
+  //Update an Car
+const updateCar = async (idcar, data) => {
+
+  try {
+    const reply = await clienteAxios.put(`/api/cars/${idcar}`, data);
+
+    const alert = {
+      title: 'Exito',
+      msg: 'Coche actualizado',
+      severity: 'success'
+    }
+    
+    dispatch({
+      type: EDITAR_CAR,
+      payload: {
+        alert,
+        updatecar: reply.data
+      }
+    })
+
+    
+  } catch (error) {
+    alert = {
+      title: "Error",
+      msg: error.response.data.msg,
+      severity: "error",
+    };
+  }
+
+  dispatch({
+    type: GUARDAR_CAR_ERROR,
+    payload: alert,
+  });
+  
+}
+
   return (
     <carContext.Provider
       value={{
@@ -95,11 +132,15 @@ const CarState = (props) => {
         currentcar: state.currentcar,
         getAllCars,
         addNewCar,
+        updateCar
       }}
     >
       {props.children}
     </carContext.Provider>
   );
 };
+
+
+
 
 export default CarState;

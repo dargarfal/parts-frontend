@@ -4,7 +4,6 @@ import TableCell from "@material-ui/core/TableCell";
 import Avatar from "@material-ui/core/Avatar";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import EuroIcon from "@material-ui/icons/Euro";
 import { makeStyles } from "@material-ui/core/styles";

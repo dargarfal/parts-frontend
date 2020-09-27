@@ -29,6 +29,16 @@ export default (state, action) => {
         carregistrado: null,
         currentcar: null,
       };
+    case EDITAR_CAR:
+      return {
+        ...state,
+        cars: state.cars.map(car =>
+        car._id === action.payload.updatecar._id
+          ? action.payload.updatecar
+          : car
+      ),
+      mensaje: action.payload.alert
+      }  
     default:
       return state;
   }

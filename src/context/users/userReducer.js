@@ -22,6 +22,12 @@ export default (state, action) => {
         mensaje: action.payload,
       };
     case CAMBIAR_ESTADO:
+      return {
+        ...state,
+        users: state.users.map((user) =>
+          user._id === action.payload._id ? action.payload : user
+        ),
+      };
     case ACTUALIZAR_USUARIO:
       return {
         ...state,

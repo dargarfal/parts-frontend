@@ -32,7 +32,7 @@ function Brand({ brand }) {
   const onClick = () => {
     setEdit(true);
   };
-  //al Componente EditBrand se debe pasar tambien el id de la marca que estoy editando
+  
   return (
     <div>
       <Box display="flex" boxShadow={2} my={1} justifyContent="space-between">

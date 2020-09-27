@@ -92,8 +92,6 @@ function GeneralData({ setStep }) {
     getOneBrand(e.target.value);
   };
 
-  const [show, setShow] = useState(false);
-
   const onAddNewCar = (e) => {
     e.preventDefault();
 
@@ -108,15 +106,7 @@ function GeneralData({ setStep }) {
       locationCar !== ""
     ) {
       addNewCar(newcar);
-      /* setStep(1);
-       if(carregistrado){
-          setShow(true)
-
-          setTimeout(() => {
-            setShow(false);
-            
-          }, 2000)
-        }*/
+     
     } else {
       toast.error("Todos los campos deben ser llenados");
     }
@@ -124,9 +114,7 @@ function GeneralData({ setStep }) {
 
   return (
     <div>
-      {show ? (
-        <Spinner />
-      ) : (
+      
         <Box className={classes.container} my={2} mx={2} flex={1} boxShadow={2}>
           <HeaderCar
             titulo="Datos generales del coche"
@@ -318,7 +306,7 @@ function GeneralData({ setStep }) {
             </Box>
           </form>
         </Box>
-      )}
+     
     </div>
   );
 }

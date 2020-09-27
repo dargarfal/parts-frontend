@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography, TextField } from "@material-ui/core";
+
+import { toast } from "react-toastify";
 
 //Components
 import MenuAppBar from "../appbar/MenuAppBar";
 import Sidebar from "../sidebar/Sidebar";
 import AllCars from "./AllCars";
+
+//Context
+import carContext from "../../context/cars/carContext";
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -13,6 +18,23 @@ const useStyles = makeStyles((theme) => ({
 
 function ListCars() {
   const classes = useStyles();
+
+  const carsContext = useContext(carContext);
+  const { mensaje } = carsContext;
+
+  useEffect(() => {
+    if (mensaje) {
+      switch (mensaje.severity) {
+        case "error":
+          toast.error(mensaje.msg);
+          break;
+        case "success":
+          toast.success(mensaje.msg);
+        default:
+          break;
+      }
+    }
+  }, [mensaje]);
 
   return (
     <>

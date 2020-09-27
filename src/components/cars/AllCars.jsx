@@ -11,6 +11,9 @@ import TableRow from "@material-ui/core/TableRow";
 
 //Context
 import carContext from "../../context/cars/carContext";
+import partContext from '../../context/parts/partContext';
+
+import { toast } from "react-toastify";
 
 import Car from "./Car";
 
@@ -19,9 +22,26 @@ function AllCars() {
   const carsContext = useContext(carContext);
   const { cars, getAllCars } = carsContext;
 
+  const partsContext = useContext(partContext);
+  const { mensaje } = partsContext;
+
   useEffect(() => {
+    
     getAllCars();
-  }, []);
+
+    if (mensaje) {
+      switch (mensaje.severity) {
+        case "error":
+          toast.error(mensaje.msg);
+          break;
+        case "success":
+          toast.success(mensaje.msg);
+        default:
+          break;
+      }
+    }
+
+  }, [mensaje]);
 
   return (
     <div>
@@ -50,10 +70,10 @@ function AllCars() {
                   <TableCell>Marca</TableCell>
                   <TableCell>Modelo</TableCell>
                   <TableCell>Año</TableCell>
-                  <TableCell>F. matriculación</TableCell>
-                  <TableCell>No. de Chasi</TableCell>
+                  <TableCell>F. Registro</TableCell>
+                  <TableCell>Chasi</TableCell>
                   <TableCell>Ubicación</TableCell>
-                  <TableCell>Alta en el sistema</TableCell>
+                  <TableCell>F. Alta</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
