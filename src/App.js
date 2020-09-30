@@ -14,6 +14,7 @@ import ListCars from "./components/cars/ListCars";
 import Parts from "./components/parts/Parts";
 import Users from "./components/users/Users";
 import AddUser from "./components/users/AddUser";
+import DetailCar from "./components/cars/DetailCar";
 
 //Provider
 import AuthState from "./context/authentication/authState";
@@ -23,6 +24,7 @@ import BrandState from "./context/brands/brandState";
 import LocationState from "./context/locations/locationState";
 import CarState from "./context/cars/carState";
 import PartState from "./context/parts/partState";
+import ImageState from './context/images/imageState';
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import red from "@material-ui/core/colors/red";
@@ -30,6 +32,7 @@ import { green, blue } from "@material-ui/core/colors";
 
 //Componente para la validadcion de accesos a los componentes (Ruta Privada)
 import RoutePrivate from "./components/privateroute/RoutePrivate";
+
 
 const theme = createMuiTheme({
   palette: {
@@ -55,6 +58,7 @@ function App() {
               <LocationState>
                 <CarState>
                   <PartState>
+                    <ImageState>
                     <Router>
                       <Switch>
                         <Route exact path="/" component={Login} />
@@ -73,6 +77,7 @@ function App() {
                         <RoutePrivate exact path="/cars" component={ListCars} />
                         <RoutePrivate exact path="/parts" component={Parts} />
                         <RoutePrivate exact path="/users" component={Users} />
+                        <RoutePrivate exact path="/detailcar/:id" component={DetailCar} />
                         <RoutePrivate
                           exact
                           path="/adduser"
@@ -80,6 +85,7 @@ function App() {
                         />
                       </Switch>
                     </Router>
+                    </ImageState>
                   </PartState>
                 </CarState>
               </LocationState>

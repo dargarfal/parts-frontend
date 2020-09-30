@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Box, Tooltip } from "@material-ui/core";
 import TableCell from "@material-ui/core/TableCell";
 import Avatar from "@material-ui/core/Avatar";
@@ -170,17 +171,7 @@ function Car({ car }) {
       >
         {car.yearCar}
       </TableCell>
-      <TableCell
-        className={
-          car.finishedCar
-            ? classes.finished
-            : !car.enabledCar
-            ? classes.disable
-            : null
-        }
-      >
-        {car.dateplateCar.slice(0, 10)}
-      </TableCell>
+
       <TableCell
         className={
           car.finishedCar
@@ -281,9 +272,11 @@ function Car({ car }) {
 
           <Box mx={1}>
             <Tooltip title="Ver detalles del coche" arrow>
-              <IconButton edge="end" aria-label="delete" disabled={disable}>
-                <VisibilityIcon />
-              </IconButton>
+              <Link to={`/detailcar/${car._id}`}>
+                <IconButton edge="end" aria-label="delete" disabled={disable}>
+                  <VisibilityIcon />
+                </IconButton>
+              </Link>
             </Tooltip>
           </Box>
 

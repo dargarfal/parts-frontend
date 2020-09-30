@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 //Context
 import carContext from "../../context/cars/carContext";
-import partContext from '../../context/parts/partContext';
+import partContext from "../../context/parts/partContext";
 
 import { toast } from "react-toastify";
 
@@ -26,7 +26,6 @@ function AllCars() {
   const { mensaje } = partsContext;
 
   useEffect(() => {
-    
     getAllCars();
 
     if (mensaje) {
@@ -40,7 +39,6 @@ function AllCars() {
           break;
       }
     }
-
   }, [mensaje]);
 
   return (
@@ -70,7 +68,6 @@ function AllCars() {
                   <TableCell>Marca</TableCell>
                   <TableCell>Modelo</TableCell>
                   <TableCell>Año</TableCell>
-                  <TableCell>F. Registro</TableCell>
                   <TableCell>Chasi</TableCell>
                   <TableCell>Ubicación</TableCell>
                   <TableCell>F. Alta</TableCell>

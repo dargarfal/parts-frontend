@@ -6,6 +6,7 @@ import {
   CAMBIAR_ESTADO,
   OBTENER_USUARIOS,
   OBTENER_UN_USUARIO,
+  CAMBIAR_CONTRASENA
 } from "../../types";
 
 export default (state, action) => {
@@ -28,6 +29,7 @@ export default (state, action) => {
           user._id === action.payload._id ? action.payload : user
         ),
       };
+    case CAMBIAR_CONTRASENA:  
     case ACTUALIZAR_USUARIO:
       return {
         ...state,

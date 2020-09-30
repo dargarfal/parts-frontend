@@ -19,11 +19,15 @@ import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import BuildIcon from "@material-ui/icons/Build";
 import LowPriorityIcon from "@material-ui/icons/LowPriority";
 import EuroIcon from "@material-ui/icons/Euro";
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 import { Link } from "react-router-dom";
 
 //Context
 import authContext from "../../context/authentication/authContext";
+
+//Components
+import EditPassUser from '../users/EditPassUser';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,6 +74,13 @@ function Sidebar() {
       setShowAdmin(false);
     }
   }, []);
+
+  const [editpass, setEditPass] = useState(false);
+
+  const onUpdateUser = () => {
+    setEditPass(true);
+  }
+
 
   const [showadmin, setShowAdmin] = useState(false);
 
@@ -194,8 +205,32 @@ function Sidebar() {
 
             <Divider />
           </Box>
-        ) : null}
+        ) : 
+        (
+          <Box>
+          <Box mt={1} ml={2} fontWeight="bolder">
+            Gestión de Usuario
+          </Box>
+          <List>
+            
+              <ListItem button onClick={onUpdateUser}>
+                <ListItemIcon>
+                  <LockOpenIcon />
+                </ListItemIcon>
+                <ListItemText primary="Cambiar contraseña" />
+              </ListItem>
+         
+           
+          </List>
+          </Box>
+        )
+        }
       </div>
+      {editpass ? <EditPassUser 
+                editpass={editpass} 
+                setEditPass={setEditPass} 
+                
+                /> : null}
     </Drawer>
   );
 }

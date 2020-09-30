@@ -12,6 +12,7 @@ import {
   OBTENER_USUARIOS,
   CAMBIAR_ESTADO,
   OBTENER_UN_USUARIO,
+  CAMBIAR_CONTRASENA
 } from "../../types";
 
 const UserState = (props) => {
@@ -198,6 +199,62 @@ const UserState = (props) => {
     }
   };
 
+  const changePassword = async (userid, data) => {
+
+    try {
+      const reply = await clienteAxios.put(`/api/users/changepass/${userid}`, data);
+
+      const alert = {
+        title: 'Exito',
+        msg: 'Contraseña actualizada',
+        severity: 'success'
+      }
+
+      dispatch({
+        type: CAMBIAR_CONTRASENA,
+        payload: {
+          alert,
+          updateuser: reply.data
+        }
+      })
+
+      setTimeout(() => {
+        dispatch({
+          type: REINICIAR
+        })
+      }, 1000);
+
+    } catch (error) {
+      let alert;
+
+      if (error.response.status === 406) {
+        alert = {
+          title: "Error",
+          msg: error.response.data.errors[0].msg,
+          severity: "error",
+        };
+      } else {
+        alert = {
+          title: "Error",
+          msg: error.response.data.msg,
+          severity: "error",
+        };
+      }
+
+    dispatch({
+        type: REGISTRO_ERROR,
+        payload: alert,
+      });
+    }
+
+    setTimeout(() => {
+      dispatch({
+        type: REINICIAR
+      })
+    }, 1000);
+    
+  }
+
   return (
     <userContext.Provider
       value={{
@@ -210,6 +267,7 @@ const UserState = (props) => {
         addNewUser,
         updateUser,
         getOneUser,
+        changePassword
       }}
     >
       {props.children}

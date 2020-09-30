@@ -9,6 +9,7 @@ import {
   GUARDAR_CAR_ERROR,
   EDITAR_CAR,
   OBTENER_ALL_CAR,
+  OBTENER_UN_CAR,
 } from "../../types";
 
 const CarState = (props) => {
@@ -22,6 +23,8 @@ const CarState = (props) => {
   const [state, dispatch] = useReducer(carReducer, initialState);
 
   //Functions
+
+  //Add new car -------------------------------------
   const addNewCar = async (newcar) => {
     try {
       const reply = await clienteAxios.post("/api/cars", newcar);
@@ -32,7 +35,6 @@ const CarState = (props) => {
         severity: "success",
       };
 
-      
       dispatch({
         type: GUARDAR_CAR_EXITO,
         payload: {
@@ -64,7 +66,7 @@ const CarState = (props) => {
     }
   };
 
-  //Get Alls Cars
+  //Get Alls Cars ---------------------------------------------------
   const getAllCars = async () => {
     try {
       const reply = await clienteAxios.get("/api/cars");
@@ -87,41 +89,60 @@ const CarState = (props) => {
     });
   };
 
-  //Update an Car
-const updateCar = async (idcar, data) => {
+  //Update an Car ---------------------------------------------------
+  const updateCar = async (idcar, data) => {
+    try {
+      const reply = await clienteAxios.put(`/api/cars/${idcar}`, data);
 
-  try {
-    const reply = await clienteAxios.put(`/api/cars/${idcar}`, data);
+      const alert = {
+        title: "Exito",
+        msg: "Coche actualizado",
+        severity: "success",
+      };
 
-    const alert = {
-      title: 'Exito',
-      msg: 'Coche actualizado',
-      severity: 'success'
+      dispatch({
+        type: EDITAR_CAR,
+        payload: {
+          alert,
+          updatecar: reply.data,
+        },
+      });
+    } catch (error) {
+      alert = {
+        title: "Error",
+        msg: error.response.data.msg,
+        severity: "error",
+      };
     }
-    
+
     dispatch({
-      type: EDITAR_CAR,
-      payload: {
-        alert,
-        updatecar: reply.data
-      }
-    })
+      type: GUARDAR_CAR_ERROR,
+      payload: alert,
+    });
+  };
 
-    
-  } catch (error) {
-    alert = {
-      title: "Error",
-      msg: error.response.data.msg,
-      severity: "error",
-    };
-  }
+  // Get an Car ---------------------------------------------------
+  const getOneCar = async (idcar) => {
+    try {
+      const reply = await clienteAxios.get(`/api/cars/${idcar}`);
 
-  dispatch({
-    type: GUARDAR_CAR_ERROR,
-    payload: alert,
-  });
-  
-}
+      dispatch({
+        type: OBTENER_UN_CAR,
+        payload: reply.data,
+      });
+    } catch (error) {
+      alert = {
+        title: "Error",
+        msg: error.response.data.msg,
+        severity: "error",
+      };
+    }
+
+    dispatch({
+      type: GUARDAR_CAR_ERROR,
+      payload: alert,
+    });
+  };
 
   return (
     <carContext.Provider
@@ -132,15 +153,13 @@ const updateCar = async (idcar, data) => {
         currentcar: state.currentcar,
         getAllCars,
         addNewCar,
-        updateCar
+        updateCar,
+        getOneCar,
       }}
     >
       {props.children}
     </carContext.Provider>
   );
 };
-
-
-
 
 export default CarState;
