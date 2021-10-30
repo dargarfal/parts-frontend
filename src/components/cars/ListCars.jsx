@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import MenuAppBar from "../appbar/MenuAppBar";
 import Sidebar from "../sidebar/Sidebar";
 import AllCars from "./AllCars";
+import BuscadorCar from './BuscadorCar';
 
 //Context
 import carContext from "../../context/cars/carContext";
@@ -44,21 +45,12 @@ function ListCars() {
         <Sidebar />
 
         <Box mt={3} ml={2} flex={1} mr={2}>
-          <Box bgcolor="#FFF" p={2} boxShadow={2}>
-            <Typography variant="h4">Gestión de coches</Typography>
-            <Box display="flex">
-              <Box>
-                <TextField
-                  id="outlined-helperText"
-                  label="Matrícula"
-                  helperText="Escriba la matrícula del coche que desea buscar"
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  size="small"
-                />
-              </Box>
+          <Box bgcolor="#FFF" p={2} boxShadow={2} display="flex" alignItems="center">
+            <Typography variant="h4">Filtrar</Typography>
+            <Box ml={2}>
+              <BuscadorCar />
             </Box>
+            
           </Box>
 
           <Box>

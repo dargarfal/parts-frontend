@@ -5,6 +5,7 @@ import {
   EDITAR_MARCA,
   OBTENER_UNA_MARCA,
   REINICIAR_MARCA,
+  BUSCAR_MARCA
 } from "../../types";
 
 export default (state, action) => {
@@ -15,6 +16,7 @@ export default (state, action) => {
         mensaje: action.payload.alert,
         brands: [...state.brands, action.payload.newbrand],
         marcaregistrada: true,
+        marcasfiltradas: []
       };
     case GUARDAR_MARCA_ERROR:
       return {
@@ -31,6 +33,7 @@ export default (state, action) => {
             : brand
         ),
         mensaje: action.payload.alert,
+        marcasfiltradas: []
       };
     case OBTENER_MARCAS:
       return {
@@ -38,6 +41,7 @@ export default (state, action) => {
         brands: action.payload,
         mensaje: null,
         marcaregistrada: null,
+        marcasfiltradas: action.payload
       };
     case OBTENER_UNA_MARCA:
       return {
@@ -47,8 +51,15 @@ export default (state, action) => {
     case REINICIAR_MARCA:
       return {
         ...state,
-        mensaje: null,
+        mensaje: null
       };
+    case BUSCAR_MARCA:
+      return {
+        ...state,
+        marcasfiltradas: state.brands.filter(bran => (
+          bran.nameBrand.toUpperCase().indexOf(action.payload.toUpperCase()) > -1
+        ))
+      }  
 
     default:
       return state;

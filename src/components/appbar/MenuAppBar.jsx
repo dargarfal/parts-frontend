@@ -8,10 +8,12 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import Hidden from "@material-ui/core/Hidden";
+import { Box, IconButton, Tooltip } from "@material-ui/core";
 
 //Context
 import authContext from "../../context/authentication/authContext";
-import { Box, IconButton, Tooltip } from "@material-ui/core";
+import showerContext from "../../context/shower/showerContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +49,9 @@ export default function MenuAppBar(props) {
   const authsContext = useContext(authContext);
   const { autenticado, usuario, cerrarSesion } = authsContext;
 
+  const showersContext = useContext(showerContext);
+  const { shower, setShowerSiderbar } = showersContext;
+
   const onCloseSesion = () => {
     cerrarSesion();
 
@@ -66,14 +71,17 @@ export default function MenuAppBar(props) {
             flex="1"
           >
             <Box display="flex" alignItems="center">
-              <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="menu"
-              >
-                <MenuIcon />
-              </IconButton>
+              <Hidden mdUp>
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={() => setShowerSiderbar()}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Hidden>
               <Box>
                 <Typography variant="h4">Partes y Piezas</Typography>
               </Box>

@@ -6,6 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Pagination from "@material-ui/lab/Pagination";
 
 //Context
 import partContext from "../../context/parts/partContext";
@@ -18,18 +19,36 @@ function ListParts({ filtercar }) {
 
   const [filtred, setFiltred] = useState([]);
 
+  const [page, setPage] = useState(1);
+  const [printarray, setPrintArray] = useState([]);
+
   useEffect(() => {
+    
+    console.log(filtred);
     if (filtercar) {
       const fil = parts.filter((party) => party.ownercarPart === filtercar);
       setFiltred(fil);
-      console.log(fil);
+      const final = page * 10;
+      const inicio = final - 10;
+      setPrintArray(fil.slice(inicio, final));
     } else {
       setFiltred(parts);
+      const final = page * 10;
+      const inicio = final - 10;
+      setPrintArray(parts.slice(inicio, final));
     }
     //eslint-disable-next-line
+    
+    
+  }, [parts, page]);
 
-    console.log(filtercar);
-  }, [parts]);
+  
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    
+    
+  };
 
   return (
     <div>
@@ -63,12 +82,15 @@ function ListParts({ filtercar }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filtred.map((part) => (
+              {printarray.map((part) => (
                 <Part key={part._id} part={part} />
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+        <Box display="flex" justifyContent="center" mt={1}>
+          <Pagination count={Math.ceil(filtred.length / 10)}  onChange={handleChangePage} />
+        </Box>
       </Box>
     </div>
   );

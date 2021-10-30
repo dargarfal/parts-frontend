@@ -7,7 +7,6 @@ import brandContext from "../../context/brands/brandContext";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
-    width: 100,
     height: 100,
   },
 }));
@@ -25,9 +24,9 @@ function HeaderCar({ titulo, marca }) {
           <Typography variant="h5">{titulo}</Typography>
         </Box>
         <Box>
-          <Avatar
-            className={classes.avatar}
+          <img
             src={currentbrand ? currentbrand.logoBrand : null}
+            className={classes.avatar}
           />
         </Box>
       </Box>

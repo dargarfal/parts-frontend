@@ -39,7 +39,7 @@ function AddBrand() {
 
   const [brand, setBrand] = useState({
     nameBrand: "",
-    logoBrand: "",
+    logoBrand: ""
   });
 
   const { nameBrand, logoBrand } = brand;
@@ -55,6 +55,11 @@ function AddBrand() {
     e.preventDefault();
 
     addNewBrand(brand);
+
+    setBrand({
+      nameBrand: "",
+    logoBrand: ""
+    })
   };
 
   return (

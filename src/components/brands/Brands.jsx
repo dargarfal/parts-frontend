@@ -30,7 +30,7 @@ function Brands() {
   const classes = useStyles();
 
   const brandsContext = useContext(brandContext);
-  const { mensaje, marcaregistrada } = brandsContext;
+  const { mensaje } = brandsContext;
 
   useEffect(() => {
     if (mensaje) {
@@ -44,7 +44,7 @@ function Brands() {
           break;
       }
     }
-  }, [mensaje, marcaregistrada]);
+  }, [mensaje]);
 
   return (
     <>
@@ -54,12 +54,14 @@ function Brands() {
       <Box display="flex" flexDirection="row">
         <Sidebar />
 
-        <Box mt={3} ml={2} flexGrow={1}>
-          <Grid container spacing={3} xs={12}>
-            <Grid item xs={5}>
+        <Box mt={1} ml={2} >
+          <Grid container spacing={3} direction="row"
+              
+             >
+            <Grid item sm={12} md={5}>
               <AddBrand />
             </Grid>
-            <Grid item xs={7}>
+            <Grid item sm={12} md={7}>
               <ListBrands />
             </Grid>
           </Grid>

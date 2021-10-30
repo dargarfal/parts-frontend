@@ -5,6 +5,7 @@ import { Typography, Box, Tooltip } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 
+
 import EditBrand from "./EditBrand";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +36,7 @@ function Brand({ brand }) {
   
   return (
     <div>
+      
       <Box display="flex" boxShadow={2} my={1} justifyContent="space-between">
         <Box>
           <Avatar src={brand.logoBrand} className={classes.large} />
@@ -56,6 +58,7 @@ function Brand({ brand }) {
         </Box>
       </Box>
       <EditBrand edit={edit} setEdit={setEdit} brand={brand} />
+      
     </div>
   );
 }

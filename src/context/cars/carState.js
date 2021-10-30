@@ -10,6 +10,11 @@ import {
   EDITAR_CAR,
   OBTENER_ALL_CAR,
   OBTENER_UN_CAR,
+  FILTRAR_CAR_PLATE,
+  FILTRAR_CAR_BRAND,
+  FILTRAR_CAR_MODEL,
+  FILTRAR_CAR_YEAR,
+  FILTRAR_CAR_LOCATION
 } from "../../types";
 
 const CarState = (props) => {
@@ -18,6 +23,7 @@ const CarState = (props) => {
     mensaje: null,
     carregistrado: null,
     currentcar: null,
+    carsfiltrados: []
   };
 
   const [state, dispatch] = useReducer(carReducer, initialState);
@@ -144,6 +150,50 @@ const CarState = (props) => {
     });
   };
 
+  const filtrarPlate = cadena => {
+
+    dispatch({
+      type: FILTRAR_CAR_PLATE,
+      payload: cadena
+    })
+  }
+  
+  const filtrarBrand = idbrand => {
+
+    dispatch({
+      type:FILTRAR_CAR_BRAND,
+      payload: idbrand
+    })
+  }
+
+  const filtrarModel = model => {
+
+    dispatch({
+      type: FILTRAR_CAR_MODEL,
+      payload: model
+    })
+  }
+
+ 
+
+  const filtrarYear = year => {
+
+    dispatch({
+      type: FILTRAR_CAR_YEAR,
+      payload: year
+    })
+  }
+
+  const filtrarLocation = location => {
+
+    dispatch({
+      type: FILTRAR_CAR_LOCATION,
+      payload: location
+    })
+  }
+
+
+
   return (
     <carContext.Provider
       value={{
@@ -151,10 +201,16 @@ const CarState = (props) => {
         mensaje: state.mensaje,
         carregistrado: state.carregistrado,
         currentcar: state.currentcar,
+        carsfiltrados: state.carsfiltrados,
         getAllCars,
         addNewCar,
         updateCar,
         getOneCar,
+        filtrarPlate,
+        filtrarBrand,
+        filtrarModel,
+        filtrarYear,
+        filtrarLocation
       }}
     >
       {props.children}

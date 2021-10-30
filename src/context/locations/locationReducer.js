@@ -6,6 +6,7 @@ import {
   OBTENER_LOCATIONS,
   ELIMINAR_UBICACION,
   REINICIAR_LOCATION,
+  BUSCAR_LOCATION
 } from "../../types";
 
 export default (state, action) => {
@@ -16,6 +17,7 @@ export default (state, action) => {
         locations: [...state.locations, action.payload.newlocation],
         mensaje: action.payload.alert,
         locationregistrada: true,
+        locationfiltrada: []
       };
     case GUARDAR_LOCATION_ERROR:
       return {
@@ -32,6 +34,7 @@ export default (state, action) => {
             : location
         ),
         mensaje: action.payload.alert,
+        locationfiltrada: []
       };
     case OBTENER_LOCATIONS:
       return {
@@ -39,6 +42,7 @@ export default (state, action) => {
         locations: action.payload,
         mensaje: null,
         locationregistrada: null,
+        locationfiltrada: action.payload
       };
     case ELIMINAR_UBICACION:
       return {
@@ -47,12 +51,20 @@ export default (state, action) => {
         locations: state.locations.filter(
           (location) => location._id !== action.payload.locationid
         ),
+        locationfiltrada: []
       };
     case REINICIAR_LOCATION:
       return {
         ...state,
         mensaje: null,
       };
+      case BUSCAR_LOCATION:
+      return {
+        ...state,
+        locationfiltrada: state.locations.filter(location => (
+          location.nameLocation.toUpperCase().indexOf(action.payload.toUpperCase()) > -1
+        ))
+      }  
     default:
       return state;
   }

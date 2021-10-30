@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Box, Typography, Tooltip, Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
@@ -8,6 +8,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Pagination from "@material-ui/lab/Pagination";
 
 //Context
 import carContext from "../../context/cars/carContext";
@@ -20,13 +21,16 @@ import Car from "./Car";
 function AllCars() {
   //Car Context
   const carsContext = useContext(carContext);
-  const { cars, getAllCars } = carsContext;
+  const { cars, carsfiltrados, getAllCars } = carsContext;
 
   const partsContext = useContext(partContext);
   const { mensaje } = partsContext;
 
+  const [page, setPage] = useState(1);
+  const [printarray, setPrintArray] = useState(cars.slice(0, 10))
+
   useEffect(() => {
-    getAllCars();
+    
 
     if (mensaje) {
       switch (mensaje.severity) {
@@ -39,7 +43,22 @@ function AllCars() {
           break;
       }
     }
-  }, [mensaje]);
+   
+        const final = page * 10;
+        const inicio = final - 10;
+        setPrintArray(carsfiltrados.slice(inicio, final));
+        
+    
+    
+    console.log('Hola Mundo');
+
+  }, [mensaje, cars, carsfiltrados, page]);
+
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+        
+  };
 
   return (
     <div>
@@ -75,12 +94,15 @@ function AllCars() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cars.map((car) => (
+                {printarray.map((car) => (
                   <Car key={car._id} car={car} />
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
+        </Box>
+        <Box display="flex" justifyContent="center" mt={1}>
+          <Pagination count={Math.ceil(carsfiltrados.length / 10)}  onChange={handleChangePage} />
         </Box>
       </Box>
     </div>

@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
+import { Link } from "react-router-dom";
 
 //Conxtext
 import brandContext from "../../context/brands/brandContext";
@@ -18,13 +19,20 @@ import partContext from "../../context/parts/partContext";
 
 //Components
 import EditPart from "./EditPart";
+import SalePart from "./SalePart";
 
 const useStyles = makeStyles((theme) => ({
   disable: {
     color: "#c62828",
+    textDecoration: "none"
   },
   vendida: {
     color: "#757575",
+    textDecoration: "none"
+  },
+  linc: {
+    textDecoration: "none",
+    color: "#000"
   },
   modal: {
     display: "flex",
@@ -69,6 +77,7 @@ function Part({ part }) {
     }
   };
 
+  //Edit -----------------------------------
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -77,6 +86,18 @@ function Part({ part }) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  //Sale --------------------------------------
+
+  const [opensale, setOpenSale] = useState(false);
+
+  const handleOpenSale = () => {
+    setOpenSale(true);
+  };
+
+  const handleCloseSale = () => {
+    setOpenSale(false);
   };
 
   return (
@@ -104,15 +125,17 @@ function Part({ part }) {
         {part.codePart}
       </TableCell>
       <TableCell
-        className={
+        
+      >
+          <Link to={`/detailcar/${car._id}`} className={
           part.statusPart === "Vendida"
             ? classes.vendida
             : part.statusPart === "Defectuosa"
             ? classes.disable
-            : null
-        }
-      >
+            : classes.linc
+        }>
         {car.plateCar}
+        </Link>
       </TableCell>
       <TableCell>
         <Avatar src={brand.logoBrand} />
@@ -126,7 +149,9 @@ function Part({ part }) {
             : null
         }
       >
+       
         {brand.nameBrand}
+        
       </TableCell>
 
       <TableCell
@@ -200,11 +225,11 @@ function Part({ part }) {
                 edge="end"
                 aria-label="delete"
                 disabled={
-                  part.statusPart === "Defectuosa" ||
-                  part.statusPart === "Vendida"
-                    ? true
-                    : false
-                }
+                  !car.enabledCar ? true :
+                  car.finishedCar ? true :
+                  part.statusPart === "Defectuosa" ? true :
+                  part.statusPart === "Vendida" ? true : false
+                }                    
                 onClick={handleOpen}
               >
                 <EditIcon />
@@ -218,11 +243,12 @@ function Part({ part }) {
                 edge="end"
                 aria-label="delete"
                 disabled={
-                  part.statusPart === "Defectuosa" ||
-                  part.statusPart === "Vendida"
-                    ? true
-                    : false
-                }
+                  !car.enabledCar ? true :
+                  car.finishedCar ? true :
+                  part.statusPart === "Defectuosa" ? true :
+                  part.statusPart === "Vendida" ? true : false
+                }   
+                onClick={handleOpenSale}
               >
                 <EuroIcon color="secondary" />
               </IconButton>
@@ -243,6 +269,26 @@ function Part({ part }) {
         >
           <Fade in={open}>
             <EditPart part={part} setOpen={setOpen} />
+          </Fade>
+        </Modal>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          className={classes.modal}
+          open={opensale}
+          onClose={handleCloseSale}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={opensale}>
+            <SalePart 
+              part={part} 
+              car={car}
+              brand={brand}
+              setOpenSale={setOpenSale} />
           </Fade>
         </Modal>
       </TableCell>

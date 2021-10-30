@@ -24,7 +24,9 @@ import BrandState from "./context/brands/brandState";
 import LocationState from "./context/locations/locationState";
 import CarState from "./context/cars/carState";
 import PartState from "./context/parts/partState";
-import ImageState from './context/images/imageState';
+import ImageState from "./context/images/imageState";
+import SaleState from "./context/sales/saleState";
+import ShowerState from "./context/shower/showerState"
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import red from "@material-ui/core/colors/red";
@@ -32,7 +34,6 @@ import { green, blue } from "@material-ui/core/colors";
 
 //Componente para la validadcion de accesos a los componentes (Ruta Privada)
 import RoutePrivate from "./components/privateroute/RoutePrivate";
-
 
 const theme = createMuiTheme({
   palette: {
@@ -59,32 +60,60 @@ function App() {
                 <CarState>
                   <PartState>
                     <ImageState>
-                    <Router>
-                      <Switch>
-                        <Route exact path="/" component={Login} />
-                        <RoutePrivate
-                          exact
-                          path="/dashboard"
-                          component={Dashboard}
-                        />
-                        <RoutePrivate exact path="/brands" component={Brands} />
-                        <RoutePrivate
-                          exact
-                          path="/locations"
-                          component={Locations}
-                        />
-                        <RoutePrivate exact path="/addcar" component={AddCar} />
-                        <RoutePrivate exact path="/cars" component={ListCars} />
-                        <RoutePrivate exact path="/parts" component={Parts} />
-                        <RoutePrivate exact path="/users" component={Users} />
-                        <RoutePrivate exact path="/detailcar/:id" component={DetailCar} />
-                        <RoutePrivate
-                          exact
-                          path="/adduser"
-                          component={AddUser}
-                        />
-                      </Switch>
-                    </Router>
+                      <SaleState>
+                        <ShowerState>
+                        <Router>
+                          <Switch>
+                            <Route exact path="/" component={Login} />
+                            <RoutePrivate
+                              exact
+                              path="/dashboard"
+                              component={Dashboard}
+                            />
+                            <RoutePrivate
+                              exact
+                              path="/brands"
+                              component={Brands}
+                            />
+                            <RoutePrivate
+                              exact
+                              path="/locations"
+                              component={Locations}
+                            />
+                            <RoutePrivate
+                              exact
+                              path="/addcar"
+                              component={AddCar}
+                            />
+                            <RoutePrivate
+                              exact
+                              path="/cars"
+                              component={ListCars}
+                            />
+                            <RoutePrivate
+                              exact
+                              path="/parts"
+                              component={Parts}
+                            />
+                            <RoutePrivate
+                              exact
+                              path="/users"
+                              component={Users}
+                            />
+                            <RoutePrivate
+                              exact
+                              path="/detailcar/:id"
+                              component={DetailCar}
+                            />
+                            <RoutePrivate
+                              exact
+                              path="/adduser"
+                              component={AddUser}
+                            />
+                          </Switch>
+                        </Router>
+                        </ShowerState>
+                      </SaleState>
                     </ImageState>
                   </PartState>
                 </CarState>

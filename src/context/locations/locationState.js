@@ -11,6 +11,7 @@ import {
   OBTENER_LOCATIONS,
   ELIMINAR_UBICACION,
   REINICIAR_LOCATION,
+  BUSCAR_LOCATION
 } from "../../types";
 
 const LocationState = (props) => {
@@ -18,6 +19,7 @@ const LocationState = (props) => {
     locations: [],
     mensaje: null,
     locationregistrada: null,
+    locationfiltrada: []
   };
 
   const [state, dispatch] = useReducer(locationReducer, initialState);
@@ -175,16 +177,27 @@ const LocationState = (props) => {
     }
   };
 
+  const filtrarBusqueda = cadena => {
+
+    dispatch({
+      type: BUSCAR_LOCATION,
+      payload: cadena
+    })
+
+  }
+
   return (
     <locationContext.Provider
       value={{
         locations: state.locations,
         mensaje: state.mensaje,
         locationregistrada: state.locationregistrada,
+        locationfiltrada: state.locationfiltrada,
         addNewLocation,
         getAllLocations,
         updateLocation,
         deleteLocation,
+        filtrarBusqueda
       }}
     >
       {props.children}

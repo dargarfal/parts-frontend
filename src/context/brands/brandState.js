@@ -11,6 +11,7 @@ import {
   EDITAR_MARCA,
   OBTENER_UNA_MARCA,
   REINICIAR_MARCA,
+  BUSCAR_MARCA
 } from "../../types";
 
 const BrandState = (props) => {
@@ -19,6 +20,7 @@ const BrandState = (props) => {
     mensaje: null,
     marcaregistrada: null,
     currentbrand: null,
+    marcasfiltradas: []
   };
 
   const [state, dispatch] = useReducer(brandReducer, initialState);
@@ -157,6 +159,15 @@ const BrandState = (props) => {
     }
   };
 
+  const filtrarBusqueda = cadena => {
+
+    dispatch({
+      type: BUSCAR_MARCA,
+      payload: cadena
+    })
+
+  }
+
   return (
     <brandContext.Provider
       value={{
@@ -164,10 +175,12 @@ const BrandState = (props) => {
         brands: state.brands,
         marcaregistrada: state.marcaregistrada,
         currentbrand: state.currentbrand,
+        marcasfiltradas: state.marcasfiltradas,
         addNewBrand,
         getAllBrands,
         updateBrand,
         getOneBrand,
+        filtrarBusqueda
       }}
     >
       {props.children}

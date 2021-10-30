@@ -4,6 +4,11 @@ import {
   EDITAR_CAR,
   OBTENER_ALL_CAR,
   OBTENER_UN_CAR,
+  FILTRAR_CAR_PLATE,
+  FILTRAR_CAR_BRAND,
+  FILTRAR_CAR_MODEL,
+  FILTRAR_CAR_YEAR,
+  FILTRAR_CAR_LOCATION
 } from "../../types";
 
 export default (state, action) => {
@@ -29,6 +34,7 @@ export default (state, action) => {
         mensaje: null,
         carregistrado: null,
         currentcar: null,
+        carsfiltrados: action.payload
       };
     case EDITAR_CAR:
       return {
@@ -45,6 +51,33 @@ export default (state, action) => {
         ...state,
         currentcar: action.payload,
       };
+    case FILTRAR_CAR_PLATE:
+      return {
+        ...state,
+        carsfiltrados: state.cars.filter(car => (
+          car.plateCar.toUpperCase().indexOf(action.payload.toUpperCase()) > -1
+        ))
+      }   
+    case FILTRAR_CAR_BRAND:
+      return {
+        ...state,
+        carsfiltrados: state.cars.filter(car => (car.brandCar === action.payload))
+      }   
+    case FILTRAR_CAR_MODEL:
+      return {
+        ...state,
+        carsfiltrados: state.carsfiltrados.filter(car => (car.modelCar === action.payload))
+      } 
+      case FILTRAR_CAR_YEAR:
+        return {
+          ...state,
+          carsfiltrados: state.carsfiltrados.filter(car => (car.yearCar === action.payload))
+        }
+        case FILTRAR_CAR_LOCATION:
+          return {
+            ...state,
+            carsfiltrados: state.carsfiltrados.filter(car => (car.locationCar === action.payload))
+          }        
     default:
       return state;
   }
